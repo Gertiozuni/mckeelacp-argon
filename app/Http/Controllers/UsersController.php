@@ -10,7 +10,7 @@ use App\Models\User;
 
 use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the users

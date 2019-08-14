@@ -85,26 +85,26 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#users" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="users">
+                    <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="users">
                         <i class="fas fa-users"></i>
                         <span class="nav-link-text">{{ __('Users and Permissions') }}</span>
                     </a>
 
-                    <div class="collapse" id="users">
+                    <div class="collapse {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'show' : '' }}" id="users">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/users') }}">
-                                    {{ __('User Management') }}
+                                    {{ __('Users') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/user') }}">
-                                    {{ __('Roles Management') }}
+                                <a class="nav-link" href="{{ url('/roles') }}">
+                                    {{ __('Roles') }}
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/user') }}">
-                                    {{ __('Permissions Management') }}
+                                <a class="nav-link" href="{{ url('/permissions') }}">
+                                    {{ __('Permissions') }}
                                 </a>
                             </li>
                         </ul>
