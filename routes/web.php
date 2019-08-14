@@ -13,10 +13,18 @@
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
+
 	Route::get('/', 'HomeController@index')->name('home');
-	Route::resource('user', 'UserController', ['except' => ['show']]);
-	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
-	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+
+	/* Users */
+	Route::get( '/users', 'UserController@index' )->middleware('role_or_permission:admin|view users');
+
+	Route::group(['middleware' => 'role_or_permission:admin|edit users' ], function () {
+		Route::get( '/users/form/{user?}', 'UserController@form' );
+		Route::patch( '/users/{user?}', 'UserController@update' );
+		Route::post( '/users', 'UserController@store' );
+		Route::delete( '/users/{user?}', 'UserController@destroy' );
+	});
+
 });
 

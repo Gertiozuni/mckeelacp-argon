@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
+use App\Models\User;
+
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -14,19 +18,30 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\View\View
      */
-    public function index(User $model)
+    public function index()
     {
-        return view('users.index', ['users' => $model->paginate(15)]);
+        $users = User::orderBy('name')
+            ->with( 'roles' )
+            ->paginate( 10 );
+
+        return view( 'users.users', compact( 'users' ) );
     }
 
     /**
-     * Show the form for creating a new user
+     * Show the form for creating or editing a user
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function form( User $user )
     {
-        return view('users.create');
+        if( $user->id ) 
+        {
+            $user->role = $user->roles[0]->name;
+        }
+
+        $roles = Role::orderBy('name')->get();
+
+        return view( 'users.usersform', compact( 'user', 'roles' ) );
     }
 
     /**
@@ -36,22 +51,26 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UserRequest $request, User $model)
+    public function store(Request $request, User $user)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $request->validate([
+            'name' => [ 'required', 'unique:users,name', 'alpha' ],
+            'email' => [ 'required', 'unique:users,email', 'email' ],
+            'role' => [ 'required' ]
+        ]);
 
-        return redirect()->route('user.index')->withStatus(__('User successfully created.'));
-    }
+        /* insert user and get id */
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make( config( 'user.password' ) );
+        $user->save();
 
-    /**
-     * Show the form for editing the specified user
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\View\View
-     */
-    public function edit(User $user)
-    {
-        return view('users.edit', compact('user'));
+        /* assign the role */
+        $user->assignRole( $request->role );
+
+        flash( 'User successfully created.' )->success();
+        return redirect( '/users' );
     }
 
     /**
@@ -61,14 +80,23 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UserRequest $request, User  $user)
+    public function update(Request $request, User $user)
     {
-        $user->update(
-            $request->merge(['password' => Hash::make($request->get('password'))])
-                ->except([$request->get('password') ? '' : 'password']
-        ));
+        $request->validate([
+            'name' => [ 'required', Rule::unique( 'users' )->ignore( $user->id ), 'alpha' ],
+            'email' => [ 'required', Rule::unique( 'users' )->ignore( $user->id ), 'email' ],
+            'role' => [ 'required' ]
+        ]);
 
-        return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        /* removed old role add new role */
+        $user->syncRoles( $request->role );
+        
+        flash( $user->name . ' has been successfully updated.' )->success();
+        return redirect( '/users' );
     }
 
     /**
@@ -77,10 +105,11 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User  $user)
+    public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('user.index')->withStatus(__('User successfully deleted.'));
+        flash( $user->name . ' has been successfully deleted.' )->success();
+        return redirect( '/users' );
     }
 }
