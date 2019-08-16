@@ -29,9 +29,11 @@ Vue.component('pagination', require('./components/Pagination/Pagination.vue'));
 * Pages 
 */
 
-// users
+// users, roles and permissions
 Vue.component('permissions-view', require('./components/Pages/Permissions.vue').default);
 Vue.component('users-view', require('./components/Pages/Users.vue').default);
+Vue.component('roles-view', require('./components/Pages/Roles.vue').default);
+Vue.component('role-view', require('./components/Pages/Role.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

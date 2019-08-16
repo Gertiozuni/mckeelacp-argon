@@ -15,12 +15,19 @@ class RolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request )
     {
-        $roles = Role::orderBy('name')
-            ->paginate( 10 );
+        if( $request->ajax() )
+        {
+            $roles = Role::orderBy('name')
+                ->paginate( 10 );
 
-        return view( 'users.roles', compact( 'roles' ) );
+            return response()->json([
+                'roles' => $roles
+            ]);
+        }
+
+        return view( 'users.roles' );
     }
 
     /**
@@ -60,12 +67,9 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show( Role $role )
+    public function show( Request $request, Role $role )
     {
-        // load in the permissions 
         $role->load('permissions')->get();
-
-        /* get the permissomns this role doesnt have */
         $permissions = Permission::orderBy('name')->get();
 
         return view( 'users.role', compact( 'role', 'permissions' ) );
@@ -102,8 +106,12 @@ class RolesController extends Controller
     {
         $role->syncPermissions( $request->permissions );
 
-        flash( 'Permissions for ' . $role->name . ' have been successfully updated.' )->success();
-        return redirect( '/roles' );
+        flash( $role->name . ' has been successfully updated.' );
+        return response()->json(
+            [ 'status' => 'success' ],
+            201,
+            [ 'Location' => url( '/roles' ) ]
+        );
     }
 
     /**
@@ -114,8 +122,16 @@ class RolesController extends Controller
      */
     public function destroy( Role $role )
     {
-        $role->delete();
-        flash( $role->name . ' has been successfully deleted.' )->success();
-        return redirect( '/roles' );
+
+        if( $role->name === 'admin' )
+        {
+            abort( 401, 'You are not authorized to do this' );
+        }
+        
+        //$role->delete();
+
+        return response()->json([
+            'role' => $role
+        ]);
     }
 }
