@@ -1,5 +1,4 @@
 @extends('layouts.app', ['title' => __('Roles Management')])
-
 @section('content')
     @include('layouts.headers.cards')
 
@@ -48,6 +47,8 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                     <a class="dropdown-item" href="{{ url( '/roles/form/' . $role->id ) }}">{{ __('Edit') }}</a>
+                                                    <a class="dropdown-item" href="{{ url( '/roles/show/' . $role->id ) }}">{{ __('Permissions') }}</a>
+
                                                     <form action="{{ url( '/roles/' . $role->id ) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')

@@ -2,11 +2,8 @@
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->
-                	@include('flash::message')
+        	<flash :session="[{{ session('flash_notification') }}]"></flash>
         </div>
     </div>
-        <script>
-			$('.alert').not('.alert-important').delay(3000).fadeOut(350);
-		</script>
 </div>
 

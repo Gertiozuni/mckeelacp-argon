@@ -11,5 +11,11 @@ const mix = require('laravel-mix');
  |
  */
 
+var pluginPath = 'resources/plugins/'
+
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+	.sass('resources/sass/my.scss', 'public/css');
+
+mix.js( pluginPath + 'lou-multi-select/js/jquery.multi-select.js', 'public/plugins/multi-select/multi-select.js')
+	.sass( pluginPath + 'lou-multi-select/scss/multi-select.scss', 'public/plugins/multi-select/');
+

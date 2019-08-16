@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolesController extends Controller
 {
@@ -54,14 +55,20 @@ class RolesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     *  Display the role to edit permissions
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show( Role $role )
     {
-        //
+        // load in the permissions 
+        $role->load('permissions')->get();
+
+        /* get the permissomns this role doesnt have */
+        $permissions = Permission::orderBy('name')->get();
+
+        return view( 'users.role', compact( 'role', 'permissions' ) );
     }
 
     /**
@@ -81,6 +88,21 @@ class RolesController extends Controller
         $role->save();
 
         flash( $role->name . ' has been successfully updated.' )->success();
+        return redirect( '/roles' );
+    }
+
+    /**
+     * Update the permissions
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePermissions( Request $request, Role $role )
+    {
+        $role->syncPermissions( $request->permissions );
+
+        flash( 'Permissions for ' . $role->name . ' have been successfully updated.' )->success();
         return redirect( '/roles' );
     }
 
