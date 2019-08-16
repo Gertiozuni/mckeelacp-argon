@@ -63,6 +63,21 @@ return [
             ]) : [],
         ],
 
+        'legacy' => [
+            'driver' => 'mysql',
+            'host' => env('LEGACYDB_HOST', '127.0.0.1'),
+            'port' => env('LEGACYDB_PORT', '3306'),
+            'database' => env('LEGACYDB_DATABASE', 'forge'),
+            'username' => env('LEGACYDB_USERNAME', 'forge'),
+            'password' => env('LEGACYDB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'latin1',
+            'collation' => 'latin1_swedish_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

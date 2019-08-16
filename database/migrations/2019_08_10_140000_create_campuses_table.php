@@ -13,15 +13,13 @@ class CreateCampusesTable extends Migration
      */
     public function up()
     {
-         Schema::create('campuses', function (Blueprint $table) {
-
+        Schema::create('campuses', function (Blueprint $table) {
              $table->engine = 'InnoDB';
              $table->increments('id');
              $table->string('name');
              $table->string('abbreviation');
              $table->smallInteger('code');
-
-         });
+        });
     }
 
     /**

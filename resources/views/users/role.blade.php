@@ -44,14 +44,3 @@
         </div>
     </role-view>
 @endsection
-
-@push( 'js' )
-    <script type="text/javascript" src="{{ asset( 'plugins/multi-select/multi-select.js' ) }}"></script>
-
-    <script>
-        $('#permissions').multiSelect({
-            selectableHeader: "<div class='custom-header'>Add Roles</div>",
-            selectionHeader: "<div class='custom-header'>Remove Roles</div>"
-        });
-    </script>
-@endpush

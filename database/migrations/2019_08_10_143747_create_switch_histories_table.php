@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNetworkPortsHistory extends Migration
+class CreateSwitchHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreateNetworkPortsHistory extends Migration
      */
     public function up()
     {
-        Schema::create('network_ports_history', function (Blueprint $table) {
-
+        Schema::create('switch_history', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('port_id')->unsigned();
-            $table->foreign( 'port_id' )->references( 'id' )->on( 'network_ports' )->onDelete( 'cascade' ); 
+            $table->integer('switch_id')->unsigned();
+            $table->foreign( 'switch_id' )->references( 'id' )->on( 'switches' )->onDelete( 'cascade' ); 
             $table->text( 'info' );
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign( 'user_id' )->references( 'id' )->on( 'users' )->onDelete( 'cascade' ); 
             $table->timestamp('created_at')->nullable();
-
         });
     }
 
@@ -34,6 +32,6 @@ class CreateNetworkPortsHistory extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('switch_history');
     }
 }

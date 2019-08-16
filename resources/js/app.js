@@ -34,6 +34,7 @@ Vue.component('permissions-view', require('./components/Pages/Permissions.vue').
 Vue.component('users-view', require('./components/Pages/Users.vue').default);
 Vue.component('roles-view', require('./components/Pages/Roles.vue').default);
 Vue.component('role-view', require('./components/Pages/Role.vue').default);
+Vue.component('appleclassroomupload-view', require('./components/Pages/AppleClassroomUpdate.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

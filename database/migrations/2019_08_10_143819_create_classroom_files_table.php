@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClassroomArchiveTable extends Migration
+class CreateClassroomFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateClassroomArchiveTable extends Migration
      */
     public function up()
     {
-        Schema::create('classroom_archive', function (Blueprint $table) {
+        Schema::create('classroom_files', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('path');
@@ -34,6 +34,6 @@ class CreateClassroomArchiveTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classroom_archive');
+        Schema::dropIfExists('classroom_files');
     }
 }

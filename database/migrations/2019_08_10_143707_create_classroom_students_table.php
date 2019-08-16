@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClassroomStaff extends Migration
+class CreateClassroomStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateClassroomStaff extends Migration
      */
     public function up()
     {
-        Schema::create('classroom_staff', function (Blueprint $table) {
-
+        Schema::create('classroom_students', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string( 'staff_id' );
+            $table->string( 'student_id' );
             $table->string( 'first_name' );
             $table->string( 'last_name' );
+            $table->string( 'grade' );
             $table->integer( 'campus_id' )->unsigned();
             $table->foreign( 'campus_id' )->references( 'id' )->on( 'campuses' )->onDelete( 'cascade' );
-            $table->index('staff_id');
+            $table->index('student_id');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateClassroomStaff extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('classroom_students');
     }
 }

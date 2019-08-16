@@ -92,17 +92,17 @@
 
                     <div class="collapse {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'show' : '' }}" id="users">
                         <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
+                            <li class="nav-item {{ request()->is( 'users*' ) ? 'active' : '' }} ">
                                 <a class="nav-link" href="{{ url('/users') }}">
                                     {{ __('Users') }}
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {{ request()->is( 'roles*' ) ? 'active' : '' }} ">
                                 <a class="nav-link" href="{{ url('/roles') }}">
                                     {{ __('Roles') }}
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {{ request()->is( 'permissions*' ) ? 'active' : '' }} ">
                                 <a class="nav-link" href="{{ url('/permissions') }}">
                                     {{ __('Permissions') }}
                                 </a>
@@ -112,29 +112,25 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-planet text-blue"></i> {{ __('Icons') }}
+                    <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="users">
+                        <i class="fab fa-apple"></i>
+                        <span class="nav-link-text">{{ __('Apple Classroom') }}</span>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-pin-3 text-orange"></i> {{ __('Maps') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-key-25 text-info"></i> {{ __('Login') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-circle-08 text-pink"></i> {{ __('Register') }}
-                    </a>
-                </li>
-                <li class="nav-item mb-5" style="position: absolute; bottom: 0;">
-                    <a class="nav-link" href="https://www.creative-tim.com/product/argon-dashboard-pro-laravel" target="_blank">
-                        <i class="ni ni-cloud-download-95"></i> Upgrade to PRO
-                    </a>
+
+                    <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="users">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item {{ request()->is( 'appleclassroom' ) ? 'active' : '' }} ">
+                                <a class="nav-link" href="{{ url('/appleclassroom') }}">
+                                    {{ __('Update') }}
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->is( 'appleclassroom/archives' ) ? 'active' : '' }} ">
+                                <a class="nav-link" href="{{ url('/appleclassroom/archives') }}">
+                                    {{ __('Archive') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
             <!-- Divider -->

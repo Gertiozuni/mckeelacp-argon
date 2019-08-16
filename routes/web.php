@@ -45,7 +45,19 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::patch( '/permissions/{perm?}', 'PermissionsController@update' );
 		Route::post( '/permissions', 'PermissionsController@store' );
 		Route::delete( '/permissions/{perm}', 'PermissionsController@destroy' );
+
 	});
 
+	/* 
+	*	Apple Classroom
+	*/
+	Route::group(['middleware' => 'role_or_permission:admin|edit appleclassroom' ], function () {
+		Route::get( '/appleclassroom', 'AppleClassroomController@index' );
+		Route::post( '/appleclassroom/upload', 'AppleClassroomController@upload' );
+		Route::post( '/appleclassroom/update', 'AppleClassroomController@update' );
+		Route::get( '/appleclassroom/archives', 'AppleClassroomController@archives' );
+		Route::get( '/appleclassroom/download/{archive}', 'AppleClassroomController@download' );
+
+	});
 });
 

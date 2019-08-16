@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNetworkVlansTable extends Migration
+class CreatePortVlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateNetworkVlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('network_vlans', function (Blueprint $table) {
-
+        Schema::create('port_vlans', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->smallInteger('vlan');
-            $table->string('description');
-            $table->smallInteger('subnet');
-            $table->boolean('alert');
-
+            $table->integer('port_id')->unsigned();
+            $table->foreign( 'port_id' )->references( 'id' )->on( 'ports' )->onDelete( 'cascade' ); 
+            $table->integer('vlan');
         });
     }
 
@@ -32,6 +29,6 @@ class CreateNetworkVlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('network_vlans');
+        Schema::dropIfExists('port_vlans');
     }
 }
