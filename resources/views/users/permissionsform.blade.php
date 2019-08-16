@@ -1,4 +1,6 @@
-@extends('layouts.app', ['title' => __('Roles Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Permissions Form' )
 
 @section('content')
     @include('users.partials.header', ['title' => $perm->id ? 'Edit Permission' : 'Add Permission '])   

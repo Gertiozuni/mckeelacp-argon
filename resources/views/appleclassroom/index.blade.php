@@ -1,8 +1,10 @@
-@extends('layouts.app', ['title' => __('Roles Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Apple Classroom' )
 
 @section('content')
     @include('layouts.headers.cards')
-    <appleclassroomupload-view inline-template>
+    <appleclassroom-view inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col-xl-12 order-xl-1">
@@ -42,7 +44,7 @@
                 </div>
             </div>
         </div>
-    </appleclassroomupload-view>
+    </appleclassroom-view>
 @endsection
 
 @push( 'js' )

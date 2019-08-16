@@ -1,4 +1,6 @@
-@extends('layouts.app', ['title' => __('Roles Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Roles' )
 
 @section('content')
     @include('users.partials.header', ['title' => $role->id ? 'Edit Role' : 'Add Role '])   

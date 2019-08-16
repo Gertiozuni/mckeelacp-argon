@@ -55,9 +55,11 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get( '/appleclassroom', 'AppleClassroomController@index' );
 		Route::post( '/appleclassroom/upload', 'AppleClassroomController@upload' );
 		Route::post( '/appleclassroom/update', 'AppleClassroomController@update' );
+	});
+
+	Route::group(['middleware' => 'role_or_permission:admin|view appleclassroom' ], function () {
 		Route::get( '/appleclassroom/archives', 'AppleClassroomController@archives' );
 		Route::get( '/appleclassroom/download/{archive}', 'AppleClassroomController@download' );
-
 	});
 });
 

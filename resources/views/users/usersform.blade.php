@@ -1,4 +1,6 @@
-@extends('layouts.app', ['title' => __('User Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Users' )
 
 @section('content')
     @include('users.partials.header', ['title' => $user->id ? 'Edit User' : 'Add User '])   

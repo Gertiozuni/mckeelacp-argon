@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => __('Roles Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Role' )
+
 @push( 'head' )
     <link href="{{ asset( 'plugins/multi-select/multi-select.css' ) }}" rel="stylesheet">
 @endpush 

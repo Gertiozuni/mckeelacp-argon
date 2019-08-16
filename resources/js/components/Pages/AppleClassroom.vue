@@ -2,7 +2,6 @@
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import vue2Dropzone from 'vue2-dropzone'
 
-
 export default {
 
     components: {

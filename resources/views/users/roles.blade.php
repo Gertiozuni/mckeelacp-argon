@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => __('Roles Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Roles' )
+
 @section('content')
     @include('layouts.headers.cards')
     <roles-view inline-template>

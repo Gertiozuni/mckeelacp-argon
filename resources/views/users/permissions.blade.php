@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => __('Permissions Management')])
+@extends('layouts.app')
+
+@section( 'title', 'Permissions' )
+
 @section('content')
     @include('layouts.headers.cards')
     <permissions-view inline-template>

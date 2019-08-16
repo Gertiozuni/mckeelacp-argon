@@ -33,7 +33,7 @@
 
                     flash(`${data.role.name} role has been successfully deleted`, 'success' )
                 }).catch( ({response}) => {
-                    flash( response.data.message, 'error' )
+                    flash( response.data.message, 'danger' )
                 })
             }
         }
