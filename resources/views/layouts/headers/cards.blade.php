@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="header-body">
             <!-- Card stats -->
-        	<flash :session="[{{ session('flash_notification') }}]"></flash>
+        	<flash :session="{{ json_encode(session('flash_notification')[0]) }}"></flash>
         </div>
     </div>
 </div>

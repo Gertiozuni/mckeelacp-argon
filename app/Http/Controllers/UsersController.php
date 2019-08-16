@@ -18,13 +18,21 @@ class UsersController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index( Request $request )
     {
-        $users = User::orderBy('name')
-            ->with( 'roles' )
-            ->paginate( 10 );
 
-        return view( 'users.users', compact( 'users' ) );
+        if( $request->ajax() )
+        {
+            $users = User::orderBy('name')
+                ->with( 'roles' )
+                ->paginate( 10 );
+
+            return response()->json([
+                'users' => $users
+            ]);
+        }
+
+        return view( 'users.users' );
     }
 
     /**
@@ -107,9 +115,10 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        //$user->delete();
 
-        flash( $user->name . ' has been successfully deleted.' )->success();
-        return redirect( '/users' );
+        return response()->json([
+            'status' => 'success'
+        ]);    
     }
 }

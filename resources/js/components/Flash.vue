@@ -8,7 +8,7 @@
     export default {
         props: {
             session: {
-                type: Array
+                type: Object
             }
         },
 
@@ -21,19 +21,18 @@
         },
 
         created() {
-            if (this.session[0]) {
-                console.log(this.session[0][0])
-                this.flash(this.session[0][0].message, this.session[0][0].level);
+            console.log(this.session)
+            if (this.session) {
+                this.flash(this.session.message, this.session.level);
             }
 
             window.events.$on(
-                'flash', session => this.flash(session[0][0].message, session[0][0].level)
+                'flash', session => this.flash(session.message, session.level)
             );
         },
 
         methods: {
             flash(message, level) {
-                console.log( level, message)
                 this.body = message;
                 this.level = level
                 this.show = true;

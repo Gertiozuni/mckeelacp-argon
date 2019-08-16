@@ -19,12 +19,19 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-/* Globel Components */
+/* 
+* Globel Components 
+*/
 Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('pagination', require('./components/Pagination/Pagination.vue'));
 
-/* Pages */
+/* 
+* Pages 
+*/
+
+// users
 Vue.component('permissions-view', require('./components/Pages/Permissions.vue').default);
+Vue.component('users-view', require('./components/Pages/Users.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
