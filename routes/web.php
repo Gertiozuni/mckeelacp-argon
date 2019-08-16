@@ -61,5 +61,15 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get( '/appleclassroom/archives', 'AppleClassroomController@archives' );
 		Route::get( '/appleclassroom/download/{archive}', 'AppleClassroomController@download' );
 	});
+
+	/* 
+	*	Cisco
+	*/
+	Route::group(['middleware' => 'role_or_permission:admin|view cisco' ], function () {
+		Route::get( '/cisco/search', 'CiscoController@searchIndex' );
+		Route::post( '/cisco/search', 'CiscoController@search' );
+		Route::get( '/cisco/wipe', 'CiscoController@wipeIndex' );
+		Route::post( '/cisco/wipe', 'CiscoController@wipe' );
+	});
 });
 

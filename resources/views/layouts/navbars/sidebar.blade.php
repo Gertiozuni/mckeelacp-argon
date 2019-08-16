@@ -6,7 +6,7 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="{{ url('/') }}">
-            <img src="{{ asset('argon') }}/img/brand/blue.png" class="navbar-brand-img" alt="...">
+            IT ACP
         </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
@@ -84,8 +84,11 @@
                     </a>
                 </li>
 
+                {{-- 
+                        Users
+                 --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="users">
+                    <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
                         <i class="fas fa-users"></i>
                         <span class="nav-link-text">{{ __('Users and Permissions') }}</span>
                     </a>
@@ -111,13 +114,16 @@
                     </div>
                 </li>
 
+                {{-- 
+                        Apple Classroom
+                 --}}
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="users">
+                    <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#apple" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="apple">
                         <i class="fab fa-apple"></i>
                         <span class="nav-link-text">{{ __('Apple Classroom') }}</span>
                     </a>
 
-                    <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="users">
+                    <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="apple">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item {{ request()->is( 'appleclassroom' ) ? 'active' : '' }} ">
                                 <a class="nav-link" href="{{ url('/appleclassroom') }}">
@@ -127,6 +133,31 @@
                             <li class="nav-item {{ request()->is( 'appleclassroom/archives' ) ? 'active' : '' }} ">
                                 <a class="nav-link" href="{{ url('/appleclassroom/archives') }}">
                                     {{ __('Archive') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- 
+                        Cisco
+                 --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is( 'cisco*' ) ? 'active' : '' }}" href="#cisco" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
+                        <i class="fas fa-tablet-alt"></i>
+                        <span class="nav-link-text">{{ __('Cisco MDM') }}</span>
+                    </a>
+
+                    <div class="collapse {{ request()->is( 'cisco*' ) ? 'show' : '' }}" id="cisco">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item {{ request()->is( 'cisco/wipe*' ) ? 'active' : '' }} ">
+                                <a class="nav-link" href="{{ url('/cisco/wipe') }}">
+                                    {{ __('Wipe') }}
+                                </a>
+                            </li>
+                            <li class="nav-item {{ request()->is( 'cisco/search*' ) ? 'active' : '' }} ">
+                                <a class="nav-link" href="{{ url('/cisco/search') }}">
+                                    {{ __('Search') }}
                                 </a>
                             </li>
                         </ul>
