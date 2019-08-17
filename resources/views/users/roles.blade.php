@@ -32,19 +32,21 @@
                                     <tr v-for="role of roles" class='myTableRow'>
                                         <td>@{{ role.name }}</td>
                                         <td class="text-right">
-                                            <a :href="`{{ url( '/roles/form' ) }}/${role.id}`">
-                                                <button class="btn btn-sm btn-primary" type="button">
-                                                    <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                                <a :href="`{{ url( '/roles/form' ) }}/${role.id}`">
+                                                    <button class="btn btn-sm btn-primary" type="button">
+                                                        <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                                    </button>
+                                                </a>
+                                                <a :href="`{{ url( '/roles/show' ) }}/${role.id}`">
+                                                    <button class="btn btn-sm btn-info" type="button">
+                                                        <span class="btn-inner--icon"><i class="fas fa-list"></i></span>
+                                                    </button>
+                                                </a>
+                                                <button v-if="role.name !== 'admin'" class="btn btn-sm btn-danger" type="button" @click="deleteRole( role.id )">
+                                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
                                                 </button>
-                                            </a>
-                                            <a :href="`{{ url( '/roles/show' ) }}/${role.id}`">
-                                                <button class="btn btn-sm btn-info" type="button">
-                                                    <span class="btn-inner--icon"><i class="fas fa-list"></i></span>
-                                                </button>
-                                            </a>
-                                            <button v-if="role.name !== 'admin'" class="btn btn-sm btn-danger" type="button" @click="deleteRole( role.id )">
-                                                <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
-                                            </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>

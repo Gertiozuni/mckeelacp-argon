@@ -47,14 +47,16 @@
                                         <td>@{{ user.email }}</td>
                                         <td>@{{ capitalize(user.roles[ 0 ].name) }}</td>
                                         <td class="text-right">
-                                            <a :href="`{{ url( '/users/form' ) }}/${user.id}`">
-                                                <button class="btn btn-sm btn-primary" type="button">
-                                                    <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                                <a :href="`{{ url( '/users/form' ) }}/${user.id}`">
+                                                    <button class="btn btn-sm btn-primary" type="button">
+                                                        <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                                    </button>
+                                                </a>
+                                                <button v-if="user.id != {{ Auth::user()->id }}" class="btn btn-sm btn-danger" type="button" @click="deleteUser( user.id, user.name )">
+                                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
                                                 </button>
-                                            </a>
-                                            <button v-if="user.id != {{ Auth::user()->id }}" class="btn btn-sm btn-danger" type="button" @click="deleteUser( user.id, user.name )">
-                                                <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
-                                            </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>

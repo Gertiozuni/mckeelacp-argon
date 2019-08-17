@@ -33,14 +33,16 @@
                                     <tr v-for="permission of permissions" class='myTableRow'>
                                         <td>@{{ permission.name }}</td>
                                         <td class="text-right">
-                                            <a :href="`{{ url( '/permissions/form' ) }}/${permission.id}`">
-                                                <button class="btn btn-sm btn-primary" type="button">
-                                                    <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                                <a :href="`{{ url( '/permissions/form' ) }}/${permission.id}`">
+                                                    <button class="btn btn-sm btn-primary" type="button">
+                                                        <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
+                                                    </button>
+                                                </a>
+                                                <button class="btn btn-sm btn-danger" type="button" @click="deletePermission( permission.id, ' permission.name' )">
+                                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
                                                 </button>
-                                            </a>
-                                            <button class="btn btn-sm btn-danger" type="button" @click="deletePermission( permission.id, ' permission.name' )">
-                                                <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
-                                            </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>
