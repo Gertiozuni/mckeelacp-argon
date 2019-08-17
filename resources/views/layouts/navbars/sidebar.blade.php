@@ -1,3 +1,6 @@
+@php
+    $user = Auth::user();
+@endphp
 <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
     <div class="container-fluid">
         <!-- Toggler -->
@@ -87,83 +90,110 @@
                 {{-- 
                         Users
                  --}}
-                <li class="nav-item">
-                    <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
-                        <i class="fas fa-users"></i>
-                        <span class="nav-link-text">{{ __('Users and Permissions') }}</span>
-                    </a>
+                @if( $user->can( 'admin', 'edit users' ) )
+                    <li class="nav-item">
+                        <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
+                            <i class="fas fa-users"></i>
+                            <span class="nav-link-text">{{ __('Users and Permissions') }}</span>
+                        </a>
 
-                    <div class="collapse {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'show' : '' }}" id="users">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item {{ request()->is( 'users*' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/users') }}">
-                                    {{ __('Users') }}
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->is( 'roles*' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/roles') }}">
-                                    {{ __('Roles') }}
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->is( 'permissions*' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/permissions') }}">
-                                    {{ __('Permissions') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        <div class="collapse {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'show' : '' }}" id="users">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item {{ request()->is( 'users*' ) ? 'active' : '' }} ">
+                                    <a class="nav-link" href="{{ url('/users') }}">
+                                        {{ __('Users') }}
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ request()->is( 'roles*' ) ? 'active' : '' }} ">
+                                    <a class="nav-link" href="{{ url('/roles') }}">
+                                        {{ __('Roles') }}
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ request()->is( 'permissions*' ) ? 'active' : '' }} ">
+                                    <a class="nav-link" href="{{ url('/permissions') }}">
+                                        {{ __('Permissions') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                {{-- 
+                        Campuses
+                 --}}
+                @if( $user->can( 'admin', 'view campus' ) )
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/campuses') }}">
+                            <i class="fas fa-school"></i> {{ __('Campuses') }}
+                        </a>
+                    </li>
+                @endif
 
                 {{-- 
                         Apple Classroom
                  --}}
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#apple" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="apple">
-                        <i class="fab fa-apple"></i>
-                        <span class="nav-link-text">{{ __('Apple Classroom') }}</span>
-                    </a>
+                @if( $user->can( 'admin', 'view appleclassroom' ) )
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#apple" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="apple">
+                            <i class="fab fa-apple"></i>
+                            <span class="nav-link-text">{{ __('Apple Classroom') }}</span>
+                        </a>
 
-                    <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="apple">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item {{ request()->is( 'appleclassroom' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/appleclassroom') }}">
-                                    {{ __('Update') }}
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->is( 'appleclassroom/archives' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/appleclassroom/archives') }}">
-                                    {{ __('Archive') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="apple">
+                            <ul class="nav nav-sm flex-column">
+                                @if( $user->can( 'admin', 'edit appleclassroom' ) )
+                                    <li class="nav-item {{ request()->is( 'appleclassroom' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/appleclassroom') }}">
+                                            {{ __('Update') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if( $user->can( 'admin', 'view appleclassroom' ) )
+                                    <li class="nav-item {{ request()->is( 'appleclassroom/archives' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/appleclassroom/archives') }}">
+                                            {{ __('Archive') }}
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
 
                 {{-- 
                         Cisco
                  --}}
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is( 'cisco*' ) ? 'active' : '' }}" href="#cisco" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
-                        <i class="fas fa-tablet-alt"></i>
-                        <span class="nav-link-text">{{ __('Cisco MDM') }}</span>
-                    </a>
+                @if( $user->can( 'admin', 'view cisco' ) )
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is( 'cisco*' ) ? 'active' : '' }}" href="#cisco" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
+                            <i class="fas fa-tablet-alt"></i>
+                            <span class="nav-link-text">{{ __('Cisco MDM') }}</span>
+                        </a>
 
-                    <div class="collapse {{ request()->is( 'cisco*' ) ? 'show' : '' }}" id="cisco">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item {{ request()->is( 'cisco/wipe*' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/cisco/wipe') }}">
-                                    {{ __('Wipe') }}
-                                </a>
-                            </li>
-                            <li class="nav-item {{ request()->is( 'cisco/search*' ) ? 'active' : '' }} ">
-                                <a class="nav-link" href="{{ url('/cisco/search') }}">
-                                    {{ __('Search') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        <div class="collapse {{ request()->is( 'cisco*' ) ? 'show' : '' }}" id="cisco">
+                            <ul class="nav nav-sm flex-column">
+                                @if( $user->can( 'admin', 'edit cisco' ) )
+                                    <li class="nav-item {{ request()->is( 'cisco/wipe*' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/cisco/wipe') }}">
+                                            {{ __('Wipe') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if( $user->can( 'admin', 'view cisco' ) )
+                                    <li class="nav-item {{ request()->is( 'cisco/search*' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/cisco/search') }}">
+                                            {{ __('Search') }}
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
             </ul>
+
+
             <!-- Divider -->
             <hr class="my-3">
             <!-- Heading -->

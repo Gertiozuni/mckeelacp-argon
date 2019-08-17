@@ -68,8 +68,23 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'role_or_permission:admin|view cisco' ], function () {
 		Route::get( '/cisco/search', 'CiscoController@searchIndex' );
 		Route::post( '/cisco/search', 'CiscoController@search' );
+	});
+
+	Route::group(['middleware' => 'role_or_permission:admin|view cisco' ], function () {
 		Route::get( '/cisco/wipe', 'CiscoController@wipeIndex' );
 		Route::post( '/cisco/wipe', 'CiscoController@wipe' );
+	});
+
+	/* 
+	*	Campuses
+	*/
+	Route::get( '/campuses', 'CampusController@index' )->middleware( 'role_or_permission:admin|view campus' );
+
+	Route::group(['middleware' => 'role_or_permission:admin|edit campus' ], function () {
+		Route::get( '/campuses/form/{campus?}', 'CampusController@form' );
+		Route::post( '/campuses/', 'CampusController@store' );
+		Route::patch( '/campuses/{campus}', 'CampusController@update' );
+		Route::delete( '/campuses/{campus}', 'CampusController@destroy' );
 	});
 });
 

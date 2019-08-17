@@ -36,6 +36,7 @@ Vue.component('roles-view', require('./components/Pages/Roles.vue').default);
 Vue.component('role-view', require('./components/Pages/Role.vue').default);
 Vue.component('appleclassroom-view', require('./components/Pages/AppleClassroom.vue').default);
 Vue.component('ciscosearch-view', require('./components/Pages/Cisco/Search.vue').default);
+Vue.component('campus-view', require('./components/Pages/Campus/Index.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
