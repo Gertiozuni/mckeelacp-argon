@@ -162,6 +162,36 @@
                 @endif
 
                 {{-- 
+                        network
+                 --}}
+                 @if( $user->can( 'admin', 'view network' ) )
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is( 'network*' ) ? 'active' : '' }}" href="#network" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
+                                <i class="fas fa-network-wired"></i>                            <span class="nav-link-text">Network</span>
+                        </a>
+
+                        <div class="collapse {{ request()->is( 'network*' ) ? 'show' : '' }}" id="network">
+                            <ul class="nav nav-sm flex-column">
+                                @if( $user->can( 'admin', 'view network' ) )
+                                    <li class="nav-item {{ request()->is( 'network/vlans*' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/network/vlans') }}">
+                                            Vlans
+                                        </a>
+                                    </li>
+                                @endif
+                                @if( $user->can( 'admin', 'view network' ) )
+                                    <li class="nav-item {{ request()->is( 'network/switches*' ) ? 'active' : '' }} ">
+                                        <a class="nav-link" href="{{ url('/network/switches') }}">
+                                            Switches
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                {{-- 
                         Cisco
                  --}}
                 @if( $user->can( 'admin', 'view cisco' ) )

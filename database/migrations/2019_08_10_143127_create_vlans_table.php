@@ -17,9 +17,9 @@ class CreateVlansTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->smallInteger('vlan');
-            $table->string('notes');
+            $table->string('description')->nullable();
             $table->smallInteger('subnet');
-            $table->boolean( 'alert' );
+            $table->boolean( 'alert' )->default( 1 );
         });
     }
 
