@@ -30,7 +30,6 @@ class AppleClassroomController extends Controller
      */
     public function index()
     {
-        dd( config('app.name') );
         return view( 'appleclassroom.index' );
     }
 

@@ -43,11 +43,11 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="user of users" class='myTableRow'>
-                                        <td>@{{ user.name }}</td>
-                                        <td>@{{ user.email }}</td>
-                                        <td>@{{ capitalize(user.roles[ 0 ].name) }}</td>
+                                        <td v-text="user.name"></td>
+                                        <td v-text="user.email"></td>
+                                        <td v-text="capitalize(user.roles[0].name)"></td>
                                         <td class="text-right">
-                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                            @if( Auth::user()->can( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/users/form' ) }}/${user.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

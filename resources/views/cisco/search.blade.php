@@ -23,12 +23,12 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="device of devices" class='myTableRow'>
-                                        <td>@{{ device.name }}</td>
-                                        <td>@{{ device.serialNumber }}</td>
-                                        <td>@{{ device.wifiMac }}</td>
-                                        <td>@{{ device.network }}</td>
-                                        <td>@{{ device.ssid }}</td>
-                                        <td>@{{ device.osName }}</td>
+                                        <td v-text="device.name"></td>
+                                        <td v-text="device.serialNumber"></td>
+                                        <td v-text="device.wifiMac"></td>
+                                        <td v-text="device.network"></td>
+                                        <td v-text="device.ssid"></td>
+                                        <td v-text="device.osName"></td>
                                     </tr>
                                 </tbody>
                             </table>

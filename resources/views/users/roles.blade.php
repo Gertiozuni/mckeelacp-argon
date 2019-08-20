@@ -30,9 +30,9 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="role of roles" class='myTableRow'>
-                                        <td>@{{ role.name }}</td>
+                                        <td v-text="role.name"></td>
                                         <td class="text-right">
-                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                            @if( Auth::user()->can( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/roles/form' ) }}/${role.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

@@ -31,9 +31,9 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="permission of permissions" class='myTableRow'>
-                                        <td>@{{ permission.name }}</td>
+                                        <td v-text="permission.name"></td>
                                         <td class="text-right">
-                                            @if( Auth::users()->can( 'admin', 'edit users' ) )
+                                            @if( Auth::user()->can( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/permissions/form' ) }}/${permission.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

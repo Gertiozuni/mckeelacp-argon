@@ -31,8 +31,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="campus of campuses" class='myTableRow' ref="table">
-                                        <td>@{{ campus.name }}</td>
-                                        <td>@{{ campus.abbreviation }}</td>
+                                        <td v-text="campus.name"></td>
+                                        <td v-text="campus.abbreviation"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->can( 'admin', 'edit campuses' ) )
                                                 <a :href="`{{ url( '/campuses/form' ) }}/${campus.id}`">
