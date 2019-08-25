@@ -16,8 +16,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('/', 'HomeController@index')->name('home');
 
-	/* 
-	*	Users and Permissions 
+	/*
+	*	Users and Permissions
 	*/
 	Route::group(['middleware' => 'role_or_permission:admin|view users' ], function () {
 		Route::get( '/users', 'UsersController@index' );
@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-	/* 
+	/*
 	*	Apple Classroom
 	*/
 	Route::group(['middleware' => 'role_or_permission:admin|edit appleclassroom' ], function () {
@@ -62,7 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get( '/appleclassroom/download/{archive}', 'AppleClassroomController@download' );
 	});
 
-	/* 
+	/*
 	*	Cisco
 	*/
 	Route::group(['middleware' => 'role_or_permission:admin|view cisco' ], function () {
@@ -75,31 +75,36 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post( '/cisco/wipe', 'CiscoController@wipe' );
 	});
 
-	/* 
+	/*
 	*	Campuses
 	*/
 	Route::get( '/campuses', 'CampusController@index' )->middleware( 'role_or_permission:admin|view campus' );
 
 	Route::group(['middleware' => 'role_or_permission:admin|edit campus' ], function () {
 		Route::get( '/campuses/form/{campus?}', 'CampusController@form' );
-		Route::post( '/campuses/', 'CampusController@store' );
+		Route::post( '/campuses', 'CampusController@store' );
 		Route::patch( '/campuses/{campus}', 'CampusController@update' );
 		Route::delete( '/campuses/{campus}', 'CampusController@destroy' );
 	});
 
-	/* 
+	/*
 	*	Network
 	*/
 	Route::prefix( 'network' )->group( function () {
 		Route::group(['middleware' => 'role_or_permission:admin|view network' ], function () {
-			Route::get( 'vlans', 'VlanController@index' );
+            Route::get( 'vlans', 'VlanController@index' );
+            Route::get( 'switches', 'SwitchesController@index' );
+
 		});
 
 		Route::group(['middleware' => 'role_or_permission:admin|edit network' ], function () {
 			Route::get( 'vlans/form/{vlan?}', 'VlanController@form' );
 			Route::post( 'vlans', 'VlanController@store' );
 			Route::patch( 'vlans/{vlan?}', 'VlanController@update' );
-			Route::delete( 'vlans/{vlan?}', 'VlanController@destroy' );
+            Route::delete( 'vlans/{vlan?}', 'VlanController@destroy' );
+
+            Route::get( 'switches/form/{switch?}', 'SwitchesController@form' );
+
 		});
 	});
 });

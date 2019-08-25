@@ -1,6 +1,6 @@
 <?php
 
-return [ 
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -9,8 +9,8 @@ return [
     |
     |
     */
-    'tid' => env( 'TELNET_ID'),
-    'tpass' => env( 'TELNET_PASSWORD'),
+    'telnet_id' => env( 'TELNET_ID'),
+    'telnet_pass' => env( 'TELNET_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
