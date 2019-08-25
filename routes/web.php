@@ -93,7 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::prefix( 'network' )->group( function () {
 		Route::group(['middleware' => 'role_or_permission:admin|view network' ], function () {
 			Route::get( 'vlans', 'VlanController@index' );
-			Route::get( 'switches', 'SwitchesController@index' );
 		});
 
 		Route::group(['middleware' => 'role_or_permission:admin|edit network' ], function () {

@@ -60,5 +60,5 @@
                 
             @include('layouts.footers.auth')
         </div>
-    </vlans-view>
+    </campus-view>
 @endsection
