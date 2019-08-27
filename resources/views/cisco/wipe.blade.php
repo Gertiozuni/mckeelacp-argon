@@ -3,18 +3,11 @@
 @section( 'title', 'Wipe iPads' )
 
 @section('content')
-    @include('layouts.headers.cards')
+    @include('layouts.headers.cards', [ 'title' => 'Wipe iPads' ])
     <div class="container-fluid mt--7">
         <div class="row">
             <div class="col-xl-12 order-xl-1">
                 <div class="card bg-secondary shadow">
-                    <div class="card-header bg-white border-0">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Wipe iPads</h3>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <form method="POST" action="{{ url( '/cisco/wipe/ ' ) }}">
                         	@csrf

@@ -3,7 +3,7 @@
 @section( 'title', 'Permissions' )
 
 @section('content')
-    @include('layouts.headers.cards')
+    @include('layouts.headers.cards', [ 'title' => 'Permissions' ])
     <permissions-view inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
@@ -12,7 +12,6 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">{{ __('Permissions') }}</h3>
                                 </div>
                                 <div class="col-4 text-right">
                                     <input type="text" name="search" placeholder="search" id="search" v-model='search' v-on:keyup.enter="getPermissions">

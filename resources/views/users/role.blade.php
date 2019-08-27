@@ -6,7 +6,7 @@
     <link href="{{ asset( 'plugins/multi-select/multi-select.css' ) }}" rel="stylesheet">
 @endpush 
 @section('content')
-    @include('layouts.headers.cards')
+    @include('layouts.headers.cards', [ 'title' => 'Add Permissions to ' . $role->name ])
     <role-view :role="{{$role}}" :permissions="{{$permissions}}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
@@ -15,7 +15,7 @@
                         <div class="card-header bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0" v-text="capitalize( role.name ) + ' Permissions'"></h3>
+                                    {{ $role->name }}
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ url( '/roles' ) }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>

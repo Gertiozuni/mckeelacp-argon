@@ -3,7 +3,7 @@
 @section( 'title', 'Roles' )
 
 @section('content')
-    @include('users.partials.header', ['title' => $role->id ? 'Edit Role' : 'Add Role '])   
+    @include('users.partials.header', ['title' => ( $role->id ? 'Edit' : 'Add' ) . ' Role'])   
 
     <div class="container-fluid mt--7">
         <div class="row">
@@ -12,7 +12,7 @@
                     <div class="card-header bg-white border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">{{ __('Roles Management') }}</h3>
+                                <h3 class="mb-0">{{ $role->id ? $role->name : '' }}</h3>
                             </div>
                             <div class="col-4 text-right">
                                 <a href="{{ url( '/roles' ) }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>

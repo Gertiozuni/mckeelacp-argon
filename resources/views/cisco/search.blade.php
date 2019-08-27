@@ -3,7 +3,7 @@
 @section( 'title', 'Search iPads' )
 
 @section('content')
-    @include('layouts.headers.cards')
+    @include('layouts.headers.cards', [ 'title' => 'Search iPads' ])
     <ciscosearch-view inline-template>
         <div class="container-fluid mt--7">
             <div class="row" v-show="devices">
@@ -40,13 +40,6 @@
             <div class="row">
                 <div class="col-xl-12 order-xl-1">
                     <div class="card bg-secondary shadow">
-                        <div class="card-header bg-white border-0">
-                            <div class="row align-items-center">
-                                <div class="col-8">
-                                    <h3 class="mb-0">Search iPads</h3>
-                                </div>
-                            </div>
-                        </div>
                         <div class="card-body">
                             <div class="pl-lg-4">
                                 

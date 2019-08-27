@@ -13,7 +13,6 @@
                         <div class="card-header bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">Switches Management</h3>
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ url( '/network/switches' ) }}" class="btn btn-sm btn-primary">Back to list</a>

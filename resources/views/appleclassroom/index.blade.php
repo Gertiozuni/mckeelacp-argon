@@ -3,7 +3,7 @@
 @section( 'title', 'Apple Classroom' )
 
 @section('content')
-    @include('layouts.headers.cards')
+    @include('layouts.headers.cards', [ 'title' => 'Apple Classroom' ])
     <appleclassroom-view inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
@@ -12,7 +12,6 @@
                         <div class="card-header bg-white border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">Apple Classroom</h3>
                                 </div>
                             </div>
                         </div>

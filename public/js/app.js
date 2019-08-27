@@ -2835,7 +2835,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n#dropzone {\r\n    background-color: #272c47;\r\n    font-family: 'Arial', sans-serif;\r\n    letter-spacing: 0.2px;\r\n    color: #777;\r\n    transition: background-color .2s linear;\r\n    border-color: #272c47;\n}\n.vue-dropzone>.dz-preview .dz-details {\r\n    background-color: #5854ba;\n}\r\n", ""]);
+exports.push([module.i, "\n#dropzone {\n    background-color: #272c47;\n    font-family: 'Arial', sans-serif;\n    letter-spacing: 0.2px;\n    color: #777;\n    transition: background-color .2s linear;\n    border-color: #272c47;\n}\n.vue-dropzone>.dz-preview .dz-details {\n    background-color: #5854ba;\n}\n", ""]);
 
 // exports
 
@@ -34622,8 +34622,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Development\www\mckeelacp-argon\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Development\www\mckeelacp-argon\resources\sass\my.scss */"./resources/sass/my.scss");
+__webpack_require__(/*! /Users/jeff/Development/www/mckeelacp-argon/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jeff/Development/www/mckeelacp-argon/resources/sass/my.scss */"./resources/sass/my.scss");
 
 
 /***/ })

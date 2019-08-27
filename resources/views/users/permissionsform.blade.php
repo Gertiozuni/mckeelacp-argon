@@ -3,7 +3,7 @@
 @section( 'title', 'Permissions Form' )
 
 @section('content')
-    @include('users.partials.header', ['title' => $perm->id ? 'Edit Permission' : 'Add Permission '])   
+    @include('users.partials.header', ['title' => ( $perm->id ? 'Edit' : 'Add' ) . ' Permission'])   
 
     <div class="container-fluid mt--7">
         <div class="row">
@@ -12,7 +12,7 @@
                     <div class="card-header bg-white border-0">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">{{ __('Permissions Management') }}</h3>
+                                {{ $perm->id ? $perm->name : '' }}
                             </div>
                             <div class="col-4 text-right">
                                 <a href="{{ url( '/permissions' ) }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
