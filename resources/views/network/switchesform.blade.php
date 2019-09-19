@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => $switch->id ? 'Edit Switch' : 'Add Switch' ])
 
-    <switchform-view :campuses="{{ $campuses }}" inline-template>
+    <switchform-view :campuses="{{ $campuses }}" :switch="{{ $switch }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col-xl-12 order-xl-1">
@@ -33,12 +33,12 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="ip_address">IP Address</label>
                                             <input type="text" name="ip_address" id="ip_address"
-                                                class="form-control form-control-alternative{{ $errors->has('ip_address') ? ' is-invalid' : '' }}"
+                                                class="form-control form-control-alternative"
                                                 value="{{ old('ip_address', $switch->ip_address) }}" required autofocus
                                             >
 
                                             @if ($errors->has('ip_address'))
-                                                <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-input" role="alert">
                                                     <strong>{{ $errors->first('ip_address') }}</strong>
                                                 </span>
                                             @endif
@@ -53,29 +53,31 @@
                                                 :options="select"
                                                 :searchable="true"
                                                 :multiple="false"
-                                                name="campus_id"
                                                 label="label"
-                                                :reduce="campus => campus.id"
+                                                track-by="id"
                                             >
                                             </multiselect>
 
                                             @if ($errors->has('campus_id'))
-                                                <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-input" role="alert">
                                                     <strong>{{ $errors->first('campus_id') }}</strong>
                                                 </span>
                                             @endif
+
+                                            <input type="hidden" name="campus_id" :value="value ? value.id : null">
                                         </div>
                                     </div>
+
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="form-control-label" for="fiber_ports">Fiber Ports</label>
                                             <input type="text" name="fiber_ports" id="fiber_ports"
-                                                class="form-control form-control-alternative{{ $errors->has('fiber_ports') ? ' is-invalid' : '' }}"
+                                                class="form-control form-control-alternative"
                                                 value="{{ old('fiber_ports', $switch->fiber_ports) }}" autofocus>
 
                                             @if ($errors->has('fiber_ports'))
-                                                <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-input" role="alert">
                                                     <strong>{{ $errors->first('fiber_ports') }}</strong>
                                                 </span>
                                             @endif
@@ -86,11 +88,11 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="location">Location</label>
                                             <input type="text" name="location" id="location"
-                                                class="form-control form-control-alternative{{ $errors->has('location') ? ' is-invalid' : '' }}"
+                                                class="form-control form-control-alternative"
                                                 value="{{ old('location', $switch->location) }}" autofocus>
 
                                             @if ($errors->has('location'))
-                                                <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-input" role="alert">
                                                     <strong>{{ $errors->first('location') }}</strong>
                                                 </span>
                                             @endif
@@ -101,11 +103,11 @@
                                         <div class="form-group">
                                             <label class="form-control-label" for="sub_location">Sub Location</label>
                                             <input type="text" name="sub_location" id="sub_location"
-                                                class="form-control form-control-alternative{{ $errors->has('sub_location') ? ' is-invalid' : '' }}"
+                                                class="form-control form-control-alternative"
                                                 value="{{ old('sub_location', $switch->sub_location) }}" autofocus>
 
                                             @if ($errors->has('sub_location'))
-                                                <span class="invalid-feedback" role="alert">
+                                                <span class="invalid-input" role="alert">
                                                     <strong>{{ $errors->first('sub_location') }}</strong>
                                                 </span>
                                             @endif

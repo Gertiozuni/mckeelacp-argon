@@ -2,3 +2,10 @@
   background-color: #f7f9fc;
 }
 
+.invalid-input {
+  font-size: 80%;
+  width: 100%;
+  margin-top: 0.25rem;
+  color: #fb6340;
+}
+

@@ -39,15 +39,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class='myTableRow' ref="table" v-for="s in switches">
-                                                <td v-text="s.ip_address"></td>
+                                            <tr class='myTableRow' v-for="(s, index) in switches">
+                                                <td><a :href="`{{url( '/network/switch' ) }}/${s.id}`" v-text="s.ip_address"></a></td>
                                                 <td v-text="s.mac_address"></td>
                                                 <td v-text="s.model"></td>
-                                                <td v-text="s.ethernet_ports"></td>
+                                                <td v-text="s.ports_count"></td>
                                                 <td v-text="s.fiber_ports"></td>
                                                 <td v-text="s.sub_location"></td>
-                                                <td v-text="s.uptime"></td>
-                                                <td v-text="s.checked_in"></td>
+                                                <td v-text="s.active ? moment(s.uptime).format('DD-MM-YYYY') : 'Inactive'"></td>
+                                                <td v-text="s.checked_in ? moment(s.checked_in).format('DD-MM-YYYY') : ''"></td>
                                                 <td class="text-right">
                                                     @if( Auth::user()->can( 'admin', 'edit network' ) )
                                                         <a :href="`{{ url( '/network/switches/form' ) }}/${s.id}`">
@@ -56,7 +56,7 @@
                                                             </button>
                                                         </a>
                                                         <button class="btn btn-sm btn-danger" type="button">
-                                                            <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
+                                                            <span class="btn-inner--icon"><i class="fas fa-trash" @click='deleteSwitch(s)'></i></span>
                                                         </button>
                                                     @endif
                                                 </td>

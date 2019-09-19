@@ -26,10 +26,26 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+/**
+ *  Moment
+ */
+import moment from 'moment'
+Vue.prototype.moment = moment
 
 
 window.events = new Vue();
 
+/* flash event */
 window.flash = function (message, level = 'success') {
     window.events.$emit('flash', { message, level });
 };
+
+/* errors */
+
+
+/* scroll event */
+window.scrollToDiv = (location) => {
+    $(location).stop().animate({
+        scrollTop: 0
+    }, 'slow', 'swing')
+}

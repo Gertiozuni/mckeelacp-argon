@@ -26,6 +26,8 @@ Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('pagination', require('./components/Pagination/Pagination.vue'));
 Vue.component('tabs', require('./components/Tabs/Tabs.vue').default);
 Vue.component('tab', require('./components/Tabs/Tab.vue').default);
+Vue.component('vue-button', require('./components/Button.vue').default);
+Vue.component('vue-badge', require('./components/Badge.vue').default);
 
 
 /*
@@ -37,12 +39,21 @@ Vue.component('permissions-view', require('./components/Pages/Permissions.vue').
 Vue.component('users-view', require('./components/Pages/Users.vue').default);
 Vue.component('roles-view', require('./components/Pages/Roles.vue').default);
 Vue.component('role-view', require('./components/Pages/Role.vue').default);
+
+// apple classroom 
 Vue.component('appleclassroom-view', require('./components/Pages/AppleClassroom.vue').default);
+
+// cisco
 Vue.component('ciscosearch-view', require('./components/Pages/Cisco/Search.vue').default);
+
+// Campuses 
 Vue.component('campus-view', require('./components/Pages/Campus/Index.vue').default);
+
+// network
 Vue.component('vlans-view', require('./components/Pages/Network/Vlans.vue').default);
 Vue.component('switches-view', require('./components/Pages/Network/Switches.vue').default);
 Vue.component('switchform-view', require('./components/Pages/Network/SwitchForm.vue').default);
+Vue.component('switch-view', require('./components/Pages/Network/Switch.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

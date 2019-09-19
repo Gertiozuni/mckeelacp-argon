@@ -93,17 +93,27 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::prefix( 'network' )->group( function () {
 		Route::group(['middleware' => 'role_or_permission:admin|view network' ], function () {
             Route::get( 'vlans', 'VlanController@index' );
-            Route::get( 'switches', 'SwitchesController@index' );
+			Route::get( 'switches', 'SwitchesController@index' );
+			Route::get( 'switch/{switch}', 'SwitchController@index' );
 
 		});
 
 		Route::group(['middleware' => 'role_or_permission:admin|edit network' ], function () {
+			
+			/* Vlans */
 			Route::get( 'vlans/form/{vlan?}', 'VlanController@form' );
 			Route::post( 'vlans', 'VlanController@store' );
 			Route::patch( 'vlans/{vlan?}', 'VlanController@update' );
             Route::delete( 'vlans/{vlan?}', 'VlanController@destroy' );
 
+			/* Switches */
             Route::get( 'switches/form/{switch?}', 'SwitchesController@form' );
+            Route::post( 'switches', 'SwitchesController@store' );
+			Route::patch('switches/{switch}', 'SwitchesController@update');
+			Route::delete('switches/{switch?}', 'SwitchesController@destroy');
+
+			/* Switch */
+            //Route::get( 'switches/form/{switch?}', 'SwitchesController@form' );
 
 		});
 	});

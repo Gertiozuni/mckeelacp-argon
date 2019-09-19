@@ -102,7 +102,6 @@ class SyncSwitches extends Command
 
             if( $this->telnet )
             {
-
                 stream_set_timeout( $this->telnet, 2 );
 
                 fputs( $this->telnet, "$this->username\r\n" );
@@ -189,9 +188,7 @@ class SyncSwitches extends Command
                         }
 
                         $ports[ $portNum ][ 'fiber' ] = false;
-
                     }
-
                 }
 
                  /* do we have any fiber ports active */
@@ -216,11 +213,9 @@ class SyncSwitches extends Command
                 /* get the uptime */
                 foreach( $rawSysInfo as $info )
                 {
-
                     /* lets look for the uptime */
                     if( strpos( $info, 'Time' ) )
                     {
-
                         $output = preg_split("/System Up Time: /", $info );
                         $data = $output[ 1 ];
 
@@ -235,15 +230,12 @@ class SyncSwitches extends Command
                         $uptime = Carbon::now();
                         $uptime->subDays( $days )->subHours( $hours )->subMinutes( $mins )->subSeconds( $seconds );
                         break;
-
-
                     }
                 }
 
                 /* if the current time and the saved time are 60 seconds apart, chances are it went down */
                 if( $uptime->diffInSeconds( $switch->uptime ) > 60 )
                 {
-
                     /* update the switch */
                     $switch->uptime = $uptime;
 
