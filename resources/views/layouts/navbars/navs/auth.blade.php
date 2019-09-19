@@ -31,7 +31,7 @@
                     <div class=" dropdown-header noti-title">
                         <h6 class="text-overflow m-0">{{ __('Welcome!') }}</h6>
                     </div>
-                    <a href="{{ url('/profile') }}" class="dropdown-item">
+                    {{-- <a href="{{ url('/profile') }}" class="dropdown-item">
                         <i class="ni ni-single-02"></i>
                         <span>{{ __('My profile') }}</span>
                     </a>
@@ -46,7 +46,7 @@
                     <a href="#" class="dropdown-item">
                         <i class="ni ni-support-16"></i>
                         <span>{{ __('Support') }}</span>
-                    </a>
+                    </a> --}}
                     <div class="dropdown-divider"></div>
                     <a href="{{ url('/logout') }}" class="dropdown-item" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
