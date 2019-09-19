@@ -46,7 +46,7 @@
                                         <td v-text="user.email"></td>
                                         <td v-text="user.roles.length > 0 ? capitalize(user.roles[0].name) : ''"></td>
                                         <td class="text-right">
-                                            @if( Auth::user()->can( 'admin', 'edit users' ) )
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/users/form' ) }}/${user.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

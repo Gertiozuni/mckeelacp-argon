@@ -90,7 +90,7 @@
                 {{-- 
                         Users
                  --}}
-                @if( $user->can( 'admin', 'edit users' ) )
+                @if( $user->hasAnyPermission( 'admin', 'edit users' ) )
                     <li class="nav-item">
                         <a class="nav-link {{ ( request()->is( 'users*' ) || request()->is( 'roles*' ) || request()->is( 'permissions*' ) ) ? 'active' : '' }}" href="#users" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
                             <i class="fas fa-users"></i>
@@ -122,7 +122,7 @@
                 {{-- 
                         Campuses
                  --}}
-                @if( $user->can( 'admin', 'view campus' ) )
+                @if( $user->hasAnyPermission( 'admin', 'view campus' ) )
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/campuses') }}">
                             <i class="fas fa-school"></i> {{ __('Campuses') }}
@@ -133,7 +133,7 @@
                 {{-- 
                         Apple Classroom
                  --}}
-                @if( $user->can( 'admin', 'view appleclassroom' ) )
+                @if( $user->hasAnyPermission( 'admin', 'view appleclassroom' ) )
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is( 'appleclassroom*' ) ? 'active' : '' }}" href="#apple" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="apple">
                             <i class="fab fa-apple"></i>
@@ -142,14 +142,14 @@
 
                         <div class="collapse {{ request()->is( 'appleclassroom*' ) ? 'show' : '' }}" id="apple">
                             <ul class="nav nav-sm flex-column">
-                                @if( $user->can( 'admin', 'edit appleclassroom' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'edit appleclassroom' ) )
                                     <li class="nav-item {{ request()->is( 'appleclassroom' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/appleclassroom') }}">
                                             {{ __('Update') }}
                                         </a>
                                     </li>
                                 @endif
-                                @if( $user->can( 'admin', 'view appleclassroom' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'view appleclassroom' ) )
                                     <li class="nav-item {{ request()->is( 'appleclassroom/archives' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/appleclassroom/archives') }}">
                                             {{ __('Archive') }}
@@ -164,7 +164,7 @@
                 {{-- 
                         network
                  --}}
-                 @if( $user->can( 'admin', 'view network' ) )
+                 @if( $user->hasAnyPermission( 'admin', 'view network' ) )
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is( 'network*' ) ? 'active' : '' }}" href="#network" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
                                 <i class="fas fa-network-wired"></i>                            <span class="nav-link-text">Network</span>
@@ -172,14 +172,14 @@
 
                         <div class="collapse {{ request()->is( 'network*' ) ? 'show' : '' }}" id="network">
                             <ul class="nav nav-sm flex-column">
-                                @if( $user->can( 'admin', 'view network' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'view network' ) )
                                     <li class="nav-item {{ request()->is( 'network/vlans*' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/network/vlans') }}">
                                             Vlans
                                         </a>
                                     </li>
                                 @endif
-                                @if( $user->can( 'admin', 'view network' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'view network' ) )
                                     <li class="nav-item {{ request()->is( 'network/switches*' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/network/switches') }}">
                                             Switches
@@ -194,7 +194,7 @@
                 {{-- 
                         Cisco
                  --}}
-                @if( $user->can( 'admin', 'view cisco' ) )
+                @if( $user->hasAnyPermission( 'admin', 'view cisco' ) )
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is( 'cisco*' ) ? 'active' : '' }}" href="#cisco" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="cisco">
                             <i class="fas fa-tablet-alt"></i>
@@ -203,14 +203,14 @@
 
                         <div class="collapse {{ request()->is( 'cisco*' ) ? 'show' : '' }}" id="cisco">
                             <ul class="nav nav-sm flex-column">
-                                @if( $user->can( 'admin', 'edit cisco' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'edit cisco' ) )
                                     <li class="nav-item {{ request()->is( 'cisco/wipe*' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/cisco/wipe') }}">
                                             {{ __('Wipe') }}
                                         </a>
                                     </li>
                                 @endif
-                                @if( $user->can( 'admin', 'view cisco' ) )
+                                @if( $user->hasAnyPermission( 'admin', 'view cisco' ) )
                                     <li class="nav-item {{ request()->is( 'cisco/search*' ) ? 'active' : '' }} ">
                                         <a class="nav-link" href="{{ url('/cisco/search') }}">
                                             {{ __('Search') }}

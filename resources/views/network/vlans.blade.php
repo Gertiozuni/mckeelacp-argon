@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="col-4 text-right">
                                     <input type="text" v-model="search" placeholder="Search"/>
-                                    @if( Auth::user()->can( 'admin', 'edit vlans' ) )
+                                    @if( Auth::user()->hasAnyPermission( 'admin', 'edit vlans' ) )
                                         <a href="{{ url('/network/vlans/form') }}" class="btn btn-sm btn-primary">Add Vlan</a>
                                     @endif
                                 </div>
@@ -38,7 +38,7 @@
                                         <td v-text="vlan.description"></td>
                                         <td v-text="'/' + vlan.subnet"></td>
                                         <td class="text-right">
-                                            @if( Auth::user()->can( 'admin', 'edit vlans' ) )
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit vlans' ) )
                                                 <a :href="`{{ url( '/network/vlans/form' ) }}/${vlan.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

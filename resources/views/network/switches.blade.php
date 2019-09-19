@@ -13,7 +13,7 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col-12 text-right">
-                                    @if( Auth::user()->can( 'admin', 'edit network' ) )
+                                    @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
                                         <a href="{{ url('/network/switches/form') }}" class="btn btn-sm btn-primary">Add Switch</a>
                                     @endif
                                 </div>
@@ -49,7 +49,7 @@
                                                 <td v-text="s.active ? moment(s.uptime).format('DD-MM-YYYY') : 'Inactive'"></td>
                                                 <td v-text="s.checked_in ? moment(s.checked_in).format('DD-MM-YYYY') : ''"></td>
                                                 <td class="text-right">
-                                                    @if( Auth::user()->can( 'admin', 'edit network' ) )
+                                                    @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
                                                         <a :href="`{{ url( '/network/switches/form' ) }}/${s.id}`">
                                                             <button class="btn btn-sm btn-primary" type="button">
                                                                 <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

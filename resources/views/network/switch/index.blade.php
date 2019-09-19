@@ -77,7 +77,7 @@
                                             >
                                         </td>
 
-                                        @if( Auth::user()->can('admin', 'edit port' ) )
+                                        @if( Auth::user()->hasAnyPermission('admin', 'edit port' ) )
                                             <td class="description" v-if="! port.editing" v-text="port.description" @click="enableEdit(port)">
                                                 <div v-if="port.editing">
                                                     <input v-model="tempValue" class="input"/>
@@ -108,7 +108,7 @@
                                         <td v-text="port.last_updated ? moment(port.last_updated).format('DD-MM-YYYY') : ''"></td>
                                         <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
                                         <td class="text-right">
-                                            @if( Auth::user()->can( 'admin', 'edit network' ) )
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
                                                 <a :href="`{{ url( '/network/vlans/form' ) }}/${port.id}`">
                                                     <vue-button 
                                                         icon='fas fa-ethernet'

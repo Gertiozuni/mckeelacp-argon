@@ -32,7 +32,7 @@
                                     <tr v-for="permission of permissions" class='myTableRow'>
                                         <td v-text="permission.name"></td>
                                         <td class="text-right">
-                                            @if( Auth::user()->can( 'admin', 'edit users' ) )
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/permissions/form' ) }}/${permission.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>

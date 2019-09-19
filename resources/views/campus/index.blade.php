@@ -33,7 +33,7 @@
                                         <td v-text="campus.name"></td>
                                         <td v-text="campus.abbreviation"></td>
                                         <td class="text-right">
-                                            @if( Auth::user()->can( 'admin', 'edit campuses' ) )
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit campuses' ) )
                                                 <a :href="`{{ url( '/campuses/form' ) }}/${campus.id}`">
                                                     <button class="btn btn-sm btn-primary" type="button">
                                                         <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
