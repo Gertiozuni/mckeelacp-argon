@@ -68,7 +68,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="port of networkSwitch.ports" class='myTableRow' ref="table">
+                                    <tr v-for="port of ports" class='myTableRow' ref="table">
                                         <td v-text="port.port"></td>
                                         <td>
                                             <vue-badge
@@ -76,7 +76,20 @@
                                                 :color="port.active ? 'success' : 'danger'"
                                             >
                                         </td>
-                                        <td v-text="port.description" v-model="port.description"></td>
+
+                                        @if( Auth::user()->can('admin', 'edit port' ) )
+                                            <td class="description" v-if="! port.editing" v-text="port.description" @click="enableEdit(port)">
+                                                <div v-if="port.editing">
+                                                    <input v-model="tempValue" class="input"/>
+                                                </div>
+                                            </td>
+                                            <td v-if="port.editing">
+                                                <input ref="edit" @blur="disableEdit(port)" v-model="tempValue" class="input"/>
+                                            </td>
+                                        @else
+                                            <td v-text="port.description"></td>
+                                        @endif
+                                        
                                         <td v-text="port.mode"></td>
                                         <td v-if="(port.vlans.length == 1)">
                                             @{{ getVlans(port.vlans)[0] }}

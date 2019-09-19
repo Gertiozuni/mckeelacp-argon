@@ -16,7 +16,8 @@
         data() {
             return {
                 search: '',
-                ports: []
+                tempValue: null,
+                ports: this.networkSwitch.ports
             }
         },
 
@@ -34,9 +35,37 @@
                 return data
             },
 
-            deletePort(port) {
+            enableEdit(port) {
+                this.tempValue = port.description;
+                port.editing = true
+                this.$forceUpdate()
 
+                this.$nextTick(() => {
+                    this.$refs.edit[0].focus()
+                })
+            },
+
+            disableEdit(port) {
+                axios.patch(`/network/port/${port.id}`, {
+                    'description': this.tempValue
+                }).then( ({data}) => {
+                    const index = this.ports.findIndex(p => p.id === port.id)
+                    this.ports[index].description = this.tempValue
+                    this.ports[index].editing = false
+                    this.tempValue = null
+
+                    flash(`Port description has been successfully updated`, 'success' )
+                })
+
+                
+                this.$forceUpdate()
             }
         }
     }
 </script>
+<style>
+
+.description{
+    cursor: pointer;
+}
+</style>

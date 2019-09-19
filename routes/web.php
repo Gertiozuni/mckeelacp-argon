@@ -114,8 +114,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 			/* Switch */
             //Route::get( 'switches/form/{switch?}', 'SwitchesController@form' );
-
 		});
+
+		Route::group(['middleware' => 'role_or_permission:admin|edit port' ], function () {
+			Route::patch('port/{port}', 'PortController@updateDescription');
+		});
+
+
 	});
 });
 
