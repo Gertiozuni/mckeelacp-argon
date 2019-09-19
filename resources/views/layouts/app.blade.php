@@ -9,16 +9,16 @@
 
         <title>@yield('title') | {{ config('app.name') }}</title>
         <!-- Favicon -->
-        <link href="{{ asset('argon') }}/img/brand/favicon.png" rel="icon" type="image/png">
+        <link href="{{ url('/argon/img/brand/favicon.png' ) }}" rel="icon" type="image/png">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
         <!-- Icons -->
-        <link href="{{ asset('argon') }}/vendor/nucleo/css/nucleo.css" rel="stylesheet">
-        <link href="{{ asset('argon') }}/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+        <link href="{{ url('/argon/vendor/nucleo/css/nucleo.css" rel="stylesheet' ) }}">
+        <link href="{{ url('/argon/vendor/@fortawesome/fontawesome-free/css/all.min.css' ) }}" rel="stylesheet">
 
         <!-- Argon CSS -->
-        <link type="text/css" href="{{ asset('argon') }}/css/argon.css?v=1.0.0" rel="stylesheet">
-        <link type="text/css" href="{{ asset('css/my.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ url('/argon/css/argon.css?v=1.0.0' ) }}" rel="stylesheet">
+        <link type="text/css" href="{{ url('/css/my.css" rel="stylesheet' ) }}">
 
         @stack('head')
     </head>
