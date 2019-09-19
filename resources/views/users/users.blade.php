@@ -44,7 +44,7 @@
                                     <tr v-for="user of users" class='myTableRow'>
                                         <td v-text="user.name"></td>
                                         <td v-text="user.email"></td>
-                                        <td v-text="capitalize(user.roles[0].name)"></td>
+                                        <td v-text="user.roles.length > 0 ? capitalize(user.roles[0].name) : ''"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->can( 'admin', 'edit users' ) )
                                                 <a :href="`{{ url( '/users/form' ) }}/${user.id}`">
