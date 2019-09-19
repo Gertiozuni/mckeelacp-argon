@@ -47,7 +47,7 @@ class VlansTableSeeder extends Seeder
                 /* Basic fields.. */
                 $vlan->id = $legacyItem->id;
                 $vlan->vlan = $legacyItem->vlan;
-                $vlan->notes = $legacyItem->description;
+                $vlan->notes = $legacyItem->notes;
                 $vlan->subnet = $legacyItem->subnet;
                 $vlan->alert = $legacyItem->alert;
 
