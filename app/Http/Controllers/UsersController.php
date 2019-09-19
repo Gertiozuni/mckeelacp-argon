@@ -44,7 +44,7 @@ class UsersController extends Controller
     {
         if( $user->id ) 
         {
-            $user->role = $user->roles[0]->name;
+            $user->role =  count( $user->roles ) ? $user->roles[0]->name : '';
         }
 
         $roles = Role::orderBy('name')->get();
