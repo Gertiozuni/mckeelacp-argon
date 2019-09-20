@@ -316,6 +316,7 @@ class SyncSwitches extends Command
                 foreach( $switch->ports as $port )
                 {
                     $number = $port->port;
+                    $port->checked_in = Carbon::now();
 
                     /* check if active status has changed */
                     if( $port->active != $ports[ $number ][ 'active' ] )
@@ -331,7 +332,6 @@ class SyncSwitches extends Command
 
                         $port->active = $ports[ $number ][ 'active' ];
                         $port->last_updated = Carbon::now();
-                        $port->save();
 
                         if( $port->mode == 'access' && in_array( $port->vlans[0]->vlan, $noAlerts ) )
                         {
@@ -374,7 +374,6 @@ class SyncSwitches extends Command
                             /* update the port */
                             $port->mode = $ports[ $number ][ 'mode' ];
                             $port->last_updated = Carbon::now();
-                            $port->save();
 
                             /* add the new vlans */
                             $insert = [];
@@ -503,7 +502,6 @@ class SyncSwitches extends Command
                             ] );
 
                             $port->last_updated = Carbon::now();
-                            $port->save();
 
                         }
 
@@ -526,12 +524,9 @@ class SyncSwitches extends Command
                             ] );
 
                             $port->last_updated = Carbon::now();
-                            $port->save();
-
-
                         }
-
                     }
+                    $port->save();
                 }
             }
             $switch->checked_in = Carbon::now();
