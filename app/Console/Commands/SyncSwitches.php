@@ -19,6 +19,7 @@ use Artisan;
 use Carbon\Carbon;
 
 use App\Mail\SwitchSyncMail;
+
 class SyncSwitches extends Command
 {
     /**
@@ -73,14 +74,14 @@ class SyncSwitches extends Command
     {
         /* init */
         $switchId = $this->argument('switch');
-        $switches = NetworkSwitch::orderBy( 'campus_id', 'ASC' )
+        $switches = NSwitch::orderBy( 'campus_id', 'ASC' )
             ->when( $switchId, function( $query, $switchId ) {
                 return $query->where( 'id', $switchId );
             })->get();
 
         $emailMessage = [];
         $clear = "\r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n clear \r\n";
-        $noAlerts = NetworkVlan::where( 'alert', 0 )->pluck( 'vlan' )->toArray();
+        $noAlerts = Vlan::where( 'alert', 0 )->pluck( 'vlan' )->toArray();
 
         foreach( $switches as $switch )
         {
@@ -96,7 +97,8 @@ class SyncSwitches extends Command
             $uptime = '';
             $messages = [];
 
-            $switch->load( 'portsinfo', 'portsinfo.vlans' );
+            $switch->load( 'ports', 'ports.vlans' );
+
             /* Start Telnet Client */
             $this->startTelnet( $switch->ip_address );
 
@@ -242,7 +244,7 @@ class SyncSwitches extends Command
                     $emailMessage[ $switch->ip_address ][ 'uptime' ] = 'Uptime change detected. Possible power outage';
 
                     /* And add the disconnection to the history */
-                    NetworkSwitchHistory::insert( [
+                    SwitchHistory::insert( [
                         'switch_id'     => $switch->id,
                         'created_at'    => Carbon::Now(),
                         'user_id'       => null,
@@ -311,7 +313,7 @@ class SyncSwitches extends Command
 
                 // This is where the magic happens //
 
-                foreach( $switch->portsinfo as $port )
+                foreach( $switch->ports as $port )
                 {
                     $number = $port->port;
 
@@ -338,7 +340,7 @@ class SyncSwitches extends Command
                         else
                         {
                             /* Add the history */
-                            NetworkPortHistory::insert( [
+                            PortHistory::insert( [
                                 'info'          => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'status' ],
                                 'user_id'       => null,
                                 'created_at'    => Carbon::now(),
@@ -386,11 +388,11 @@ class SyncSwitches extends Command
                                     ];
                                 }
 
-                                NetworkVlanMap::insert( $insert );
+                                PortVlan::insert( $insert );
                             }
                             else
                             {
-                                NetworkVlanMap::insert( [
+                                PortVlan::insert( [
                                     'port_id'   => $port->id,
                                     'vlan'      => $ports[ $number ][ 'vlans' ]
                                 ] );
@@ -398,7 +400,7 @@ class SyncSwitches extends Command
                             }
 
                             /* Add the history */
-                            NetworkPortHistory::insert( [
+                            PortHistory::insert( [
                                 'info'          => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'mode' ],
                                 'user_id'       => null,
                                 'created_at'    => Carbon::now(),
@@ -438,7 +440,7 @@ class SyncSwitches extends Command
 
 
                         /* nows lets see if any vlans are being added */
-                        if( isset( $ports[ $number ][ 'vlans' ] ) && count( $ports[ $number ][ 'vlans' ] ) )
+                        if( isset( $ports[ $number ][ 'vlans' ] ) )
                         {
                             if( is_array( $ports[ $number ][ 'vlans' ] ) )
                             {
@@ -450,7 +452,7 @@ class SyncSwitches extends Command
                                     {
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ][] = $vlan;
 
-                                        NetworkVlanMap::insert( [
+                                        PortVlan::insert( [
                                             'vlan'    => $vlan,
                                             'port_id' => $port->id
                                         ] );
@@ -469,7 +471,7 @@ class SyncSwitches extends Command
                                 {
                                     $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ][] = $ports[ $number ][ 'vlans' ];
 
-                                    NetworkVlanMap::insert( [
+                                    PortVlan::insert( [
                                         'vlan'    => $ports[ $number ][ 'vlans' ],
                                         'port_id' => $port->id
                                     ] );
@@ -493,7 +495,7 @@ class SyncSwitches extends Command
 
                             $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ] = $message;
 
-                            NetworkPortHistory::insert( [
+                            PortHistory::insert( [
                                 'info'          => $message,
                                 'user_id'       => null,
                                 'created_at'    => Carbon::now(),
@@ -516,7 +518,7 @@ class SyncSwitches extends Command
 
                             $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ] = $message;
 
-                            NetworkPortHistory::insert( [
+                            PortHistory::insert( [
                                 'info'          => $message,
                                 'user_id'       => null,
                                 'created_at'    => Carbon::now(),
@@ -538,7 +540,7 @@ class SyncSwitches extends Command
 
         if( count( $emailMessage ) )
         {
-            $users = User::all();
+            $users = User::where( 'name', 'jeff')->get();
             Mail::to( $users )->send( new SwitchSyncMail( $emailMessage ) );
         }
     }
