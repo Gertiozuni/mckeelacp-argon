@@ -2,45 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileRequest;
-use App\Http\Requests\PasswordRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
+
+use App\Rules\CurrentPassword;
+
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     /**
-     * Show the form for editing the profile.
-     *
-     * @return \Illuminate\View\View
+     * Show the index page
      */
-    public function edit()
+    public function index()
     {
-        return view('profile.edit');
+        $user = auth()->user();
+        $user->load( 'roles' );
+
+        return view( 'profile.index', compact( 'user' ) );
     }
 
     /**
      * Update the profile
-     *
-     * @param  \App\Http\Requests\ProfileRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProfileRequest $request)
+    public function update( User $user )
     {
-        auth()->user()->update($request->all());
+        $auth = auth()->user();
 
-        return back()->withStatus(__('Profile successfully updated.'));
-    }
+        if( $user->id !== $auth->id && ! $auth->hasRole( 'admin' ) )
+        {
+            flash( 'You do not have permission to do this' );
+            return back();
+        }
 
-    /**
-     * Change the password
-     *
-     * @param  \App\Http\Requests\PasswordRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function password(PasswordRequest $request)
-    {
-        auth()->user()->update(['password' => Hash::make($request->get('password'))]);
+        if( request()->email )
+        {
+            request()->validate([
+                'email' => [ 'required', Rule::unique( 'users', 'email' )->ignore( $user->id ), 'email' ]
+            ]);
 
-        return back()->withPasswordStatus(__('Password successfully updated.'));
+            $user->email = request()->email;
+            $user->save();
+
+            flash( 'Email has been successfully updated' );
+            return back();
+        }
+        else if( request()->password )
+        {
+            request()->validate([
+                'old_password' => [ new CurrentPassword ],
+                'password' => [ 'required', 'confirmed' ]
+            ]);
+
+            $user->password = Hash::make( request()->password );
+            $user->save();
+
+            flash( 'Password has been successfully updated' );
+            return back();
+        }
     }
 }

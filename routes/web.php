@@ -119,8 +119,11 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::group(['middleware' => 'role_or_permission:admin|edit port' ], function () {
 			Route::patch('port/{port}', 'PortController@updateDescription');
 		});
+	});
 
-
+	Route::prefix( 'profile' )->group( function () {
+		Route::get( '/', 'ProfileController@index' );\
+		Route::patch( '/{user}', 'ProfileController@update' );
 	});
 });
 

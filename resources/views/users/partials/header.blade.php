@@ -11,5 +11,7 @@
                 @endif
             </div>
         </div>
+        <flash :session="{{ json_encode(session('flash_notification')[0]) }}"></flash>
+
     </div>
 </div> 
