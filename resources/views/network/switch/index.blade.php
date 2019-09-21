@@ -68,12 +68,75 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="port of ports" class='myTableRow' ref="table">
+                                    <tr v-for="port of searchPorts" class='myTableRow' ref="table">
                                         <td v-text="port.port"></td>
+
                                         <td>
                                             <vue-badge
-                                                :text="port.active ? 'Active' : 'Inactive'"
-                                                :color="port.active ? 'success' : 'danger'"
+                                                :text="port.active && ! port.fiber ? 'Active' : 'Inactive'"
+                                                :color="port.active && ! port.fiber ? 'success' : 'danger'"
+                                            >
+                                        </td>
+
+                                        @if( Auth::user()->hasAnyPermission('admin', 'edit port' ) )
+                                            <td class="description" v-if="! port.editing" v-text="port.description" @click="enableEdit(port)">
+                                                <div v-if="port.editing">
+                                                    <input v-model="tempValue" class="input"/>
+                                                </div>
+                                            </td>
+                                            <td v-if="port.editing">
+                                                <input ref="edit" @blur="disableEdit(port)" v-model="tempValue" class="input"/>
+                                            </td>
+                                        @else
+                                            <td v-text="port.description"></td>
+                                        @endif
+                                        
+                                        <td v-text="port.mode"></td>
+                                        <td v-if="(port.vlans.length == 1)">
+                                            @{{ getVlans(port.vlans)[0] }}
+                                        </td>
+                                        <td v-else-if="(port.vlans.length >= 1)">
+                                            <multiselect  
+                                                :options="getVlans(port.vlans)"
+                                                :searchable="true"
+                                                placeholder="Vlans"
+                                            > 
+                                            </multiselect>
+                                        </td>
+                                        <td v-else>
+                
+                                        </td>
+                                        <td v-text="port.last_updated ? moment(port.last_updated).format('DD-MM-YYYY') : ''"></td>
+                                        <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
+                                        <td class="text-right">
+                                            @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
+                                                <a :href="`{{ url( '/network/vlans/form' ) }}/${port.id}`">
+                                                    <vue-button 
+                                                        icon='fas fa-ethernet'
+                                                        size='small'
+                                                        color='primary'
+                                                        :tooltip="{ title: 'Change Mode', placement: 'top' }"
+                                                    >
+                                                    </vue-button>
+                                                </a>
+                                                <vue-button 
+                                                    icon='fas fa-project-diagram'
+                                                    size='small'
+                                                    color='info'
+                                                    :tooltip="{ title: 'Manage Vlans', placement: 'top' }"
+                                                >
+                                                </vue-button>
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                    <tr v-for="port in searchPorts.slice(ports.length - networkSwitch.fiber_ports)" class='myTableRow' ref="table">
+                                        <td v-text="port.port + 'f'"></td>
+
+                                        <td>
+                                            <vue-badge
+                                                :text="port.active && port.fiber ? 'Active' : 'Inactive'"
+                                                :color="port.active && port.fiber ? 'success' : 'danger'"
                                             >
                                         </td>
 

@@ -2139,6 +2139,15 @@ __webpack_require__.r(__webpack_exports__);
       type: Object
     }
   },
+  computed: {
+    searchPorts: function searchPorts() {
+      var _this = this;
+
+      return this.ports.filter(function (port) {
+        return port.port.toString().includes(_this.search.toLowerCase()) || port.description && port.description.toLowerCase().includes(_this.search.toLowerCase());
+      });
+    }
+  },
   data: function data() {
     return {
       search: '',
@@ -2146,7 +2155,9 @@ __webpack_require__.r(__webpack_exports__);
       ports: this.networkSwitch.ports
     };
   },
-  created: function created() {},
+  created: function created() {
+    console.log(this.networkSwitch.fiber_ports);
+  },
   methods: {
     getVlans: function getVlans(vlans) {
       var data = [];
@@ -2180,30 +2191,30 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     },
     enableEdit: function enableEdit(port) {
-      var _this = this;
+      var _this2 = this;
 
       this.tempValue = port.description;
       port.editing = true;
       this.$forceUpdate();
       this.$nextTick(function () {
-        _this.$refs.edit[0].focus();
+        _this2.$refs.edit[0].focus();
       });
     },
     disableEdit: function disableEdit(port) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.patch("/network/port/".concat(port.id), {
         'description': this.tempValue
       }).then(function (_ref) {
         var data = _ref.data;
 
-        var index = _this2.ports.findIndex(function (p) {
+        var index = _this3.ports.findIndex(function (p) {
           return p.id === port.id;
         });
 
-        _this2.ports[index].description = _this2.tempValue;
-        _this2.ports[index].editing = false;
-        _this2.tempValue = null;
+        _this3.ports[index].description = _this3.tempValue;
+        _this3.ports[index].editing = false;
+        _this3.tempValue = null;
         flash("Port description has been successfully updated", 'success');
       });
       this.$forceUpdate();

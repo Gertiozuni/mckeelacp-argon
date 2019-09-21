@@ -13,6 +13,14 @@
             }
         },
 
+        computed: {
+            searchPorts() {
+                return this.ports.filter(port => {
+                    return ( port.port.toString().includes( this.search.toLowerCase() ) || ( port.description && port.description.toLowerCase().includes(this.search.toLowerCase() ) ))
+                })
+            }
+        },
+
         data() {
             return {
                 search: '',
@@ -22,6 +30,7 @@
         },
 
         created() {
+            console.log( this.networkSwitch.fiber_ports )
         },
 
         methods: {
