@@ -118,6 +118,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 		Route::group(['middleware' => 'role_or_permission:admin|edit port' ], function () {
 			Route::patch('port/{port}', 'PortController@updateDescription');
+			Route::patch('port/{port}/mode', 'PortController@updateMode');
+			Route::patch('port/{port}/vlans', 'PortController@updateVlans');
 		});
 	});
 

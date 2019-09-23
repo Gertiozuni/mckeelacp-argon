@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => $switch->ip_address ])
-    <switch-view :network-switch="{{ $switch }}" inline-template>
+    <switch-view :network-switch="{{ $switch }}" :vlans="{{ $vlans }}" inline-template>
         <div class="container-fluid mt--7">
     {{-- @todo switch ports 
         <switch-view :networkSwitch="{{ $switch }}" inline-template>
@@ -110,20 +110,20 @@
                                         <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                                <a :href="`{{ url( '/network/vlans/form' ) }}/${port.id}`">
                                                     <vue-button 
                                                         icon='fas fa-ethernet'
                                                         size='small'
                                                         color='primary'
                                                         :tooltip="{ title: 'Change Mode', placement: 'top' }"
+                                                        @click.native="toggleModal('mode',port)"
                                                     >
                                                     </vue-button>
-                                                </a>
                                                 <vue-button 
                                                     icon='fas fa-project-diagram'
                                                     size='small'
                                                     color='info'
                                                     :tooltip="{ title: 'Manage Vlans', placement: 'top' }"
+                                                    @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
                                             @endif
@@ -178,6 +178,7 @@
                                                         size='small'
                                                         color='primary'
                                                         :tooltip="{ title: 'Change Mode', placement: 'top' }"
+                                                        @click.native="toggleModal('mode',port)"
                                                     >
                                                     </vue-button>
                                                 </a>
@@ -186,6 +187,7 @@
                                                     size='small'
                                                     color='info'
                                                     :tooltip="{ title: 'Manage Vlans', placement: 'top' }"
+                                                    @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
                                             @endif
@@ -197,9 +199,133 @@
                     </div>
                 </div>
             </div>
+           
+            <vue-modal :show.sync="modal.active">
+                <h1 slot="header" class="modal-title" id="modal-title-default" v-if="modal.active">Port @{{ activePort.port }} - @{{ modal.type == 'mode' ? 'Change Mode' : 'Manage Vlans' }}</h1>
+    
+                <form role="form" v-if="modal.type == 'mode'">
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-control-label" for="mode">Mode</label>
+                        <multiselect 
+                            v-model="mode.mode" 
+                            :options="modes"
+                            :searchable="true"
+                            placeholder="Vlans"
+                            @input="selectVlans"
+                        > 
+                        </multiselect>                    
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label" for="mode">Vlan</label>
+                        <multiselect
+                            v-if="mode.mode == 'access'"
+                            v-model="mode.vlans" 
+                            :options="vlans"
+                            :searchable="true"
+                            placeholder="Vlans"
+                            label="vlan"
+                            :multiple="false"
+                            track-by="vlan"
+                        > 
+                        </multiselect>  
+                        <multiselect
+                            v-if="mode.mode == 'general'"
+                            v-model="mode.vlans" 
+                            :options="vlans"
+                            :searchable="true"
+                            placeholder="Vlans"
+                            label="vlan"
+                            :multiple="true"
+                            track-by="vlan"
+                            :close-on-select="false"
+                        > 
+                        </multiselect>  
+                    </div>
+                    <div class="form-group" v-if="mode.mode == 'general'">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input class="custom-control-input" v-model="taggedCheck" id="tagged" type="checkbox">
+                            <label class="custom-control-label" for="tagged">Tagged</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input class="custom-control-input" v-model="configCheck" id="copyconfig" type="checkbox">
+                            <label class="custom-control-label" for="copyconfig">Copy running config to startup config</label>
+                        </div>
+                    </div>
+                </form>
+    
+                <template slot="footer">
+                    <vue-button 
+                        v-if="modal.type == 'mode'"
+                        color="primary"
+                        text="Change"
+                        @click.native="submitModeChange"
+                        :disabled="modal.disabled"
+                    >
+                    </vue-button>
+                    <vue-button 
+                        v-if="modal.type == 'vlans'"
+                        color="primary"
+                        text="Save"
+                        @click.native="submitVlansChange"
+                        :disabled="modal.disabled"
+                    >
+                    </vue-button>
+                    <vue-button 
+                        color="link ml-auto"
+                        text="Close"
+                        @click.native="hideModal"
+                    >
+                    </vue-button>
+                </template>
+
+                <form role="form" v-if="modal.type == 'vlans'">
+                    <div class="form-group">
+                        <label class="form-control-label" for="mode">Vlans</label>
+                        <multiselect
+                            v-if="vlan.mode == 'access'"
+                            v-model="vlan.vlans" 
+                            :options="vlans"
+                            :searchable="true"
+                            placeholder="Vlans"
+                            label="vlan"
+                            :multiple="false"
+                            track-by="vlan"
+                        > 
+                        </multiselect>  
+                        <multiselect
+                            v-if="vlan.mode == 'general'"
+                            v-model="vlan.vlans" 
+                            :options="vlans"
+                            :searchable="true"
+                            placeholder="Vlans"
+                            label="vlan"
+                            :multiple="true"
+                            track-by="vlan"
+                            :close-on-select="false"
+                        > 
+                        </multiselect>
+                    </div>   
+                    
+                    <div class="form-group" v-if="vlan.mode == 'general'">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input class="custom-control-input" v-model="taggedCheck" id="tagged" type="checkbox">
+                            <label class="custom-control-label" for="tagged">Tagged</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input class="custom-control-input" v-model="configCheck" id="copyconfig" type="checkbox">
+                            <label class="custom-control-label" for="copyconfig">Copy running config to startup config</label>
+                        </div>
+                    </div>
+                </form>
+            </vue-modal>
         </div>
-
-        
-
     </switch-view> 
 @endsection

@@ -2,8 +2,11 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
+
 use App\Models\Port;
 use App\Models\PortVlan;
+use App\Models\PortHistory;
 
 use Auth;
 use Mail;
@@ -344,5 +347,167 @@ class SwitchHelper {
         return true;
     }
 
+    /*
+    *   change the port mode 
+    */
+    public function changeMode( $port ) 
+    {
+        /* init */
+        if( isset( request()->vlans[ 'vlan' ] ) ) 
+        {
+            $vlans = request()->vlans[ 'vlan' ];
+        }
+        else 
+        {
+            $vlans = implode( ',', Arr::pluck( request()->vlans, 'vlan' ) );
+        }
+
+        $saveConfig = request()->saveConfig;
+        $tagged = request()->tagged ? 'tagged' : '';
+        $mode = request()->mode;
+
+        /* Start Telnet Client */
+        $this->startTelnet( $port->switch->ip_address );
+
+        if( $this->telnet )
+        {  
+            stream_set_timeout( $this->telnet, 2 );
+
+            /* get ports */
+            fputs($this->telnet, "$this->username\r\n");
+            fputs($this->telnet, "$this->password\r\n");
+            fputs($this->telnet, "enable\r\n");
+            fputs($this->telnet, "config\r\n");
+            fputs($this->telnet, "interface ethernet 1/g$port->port\r\n");
+            fputs($this->telnet, "switchport mode $mode\r\n");
+
+            if( $mode == 'access' )
+            {
+                fputs($this->telnet, "switchport $mode vlan $vlans\r\n");
+            }
+            else
+            {
+                fputs($this->telnet, "switchport $mode allowed vlan add $vlans $tagged\r\n");
+            }
+
+            fputs($this->telnet, "exit\r\n");
+            fputs($this->telnet, "exit\r\n");
+
+            if( $saveConfig )
+            {
+                fputs($this->telnet, "copy running-config startup-config\r\n");
+                fputs($this->telnet, "y\r\n");
+            }
+
+            fclose( $this->telnet );
+        }
+
+        $this->updateVlans( $port, request()->vlans, $mode, $vlans );
+
+        return;
+    }
+
+    /*
+    *   change the port vlans 
+    */
+    public function changeVlans( $port ) 
+    {
+        /* init */
+        if( isset( request()->vlans[ 'vlan' ] ) ) 
+        {
+            $vlans = request()->vlans[ 'vlan' ];
+        }
+        else 
+        {
+            $vlans = implode( ',', Arr::pluck( request()->vlans, 'vlan') );
+        }
+
+        $saveConfig = request()->saveConfig;
+        $tagged = request()->tagged ? 'tagged' : '';
+        $mode = request()->mode;
+
+        /* Start Telnet Client */
+        $this->startTelnet( $port->switch->ip_address );
+
+        if( $this->telnet )
+        {  
+            stream_set_timeout( $this->telnet, 2 );
+
+            /* get ports */
+            fputs($this->telnet, "$this->username\r\n");
+            fputs($this->telnet, "$this->password\r\n");
+            fputs($this->telnet, "enable\r\n");
+            fputs($this->telnet, "config\r\n");
+            fputs($this->telnet, "interface ethernet 1/g$port->port\r\n");
+
+            if( $mode == 'access' )
+            {
+                fputs($this->telnet, "switchport $mode vlan $vlans\r\n");
+            }
+            else
+            {
+                fputs($this->telnet, "switchport $mode allowed vlan add $vlans $tagged\r\n");
+            }
+
+            fputs($this->telnet, "exit\r\n");
+            fputs($this->telnet, "exit\r\n");
+
+            if( $saveConfig )
+            {
+                fputs($this->telnet, "copy running-config startup-config\r\n");
+                fputs($this->telnet, "y\r\n");
+            }
+
+            fclose( $this->telnet );
+        }
+
+        $this->updateVlans( $port, request()->vlans, $mode, $vlans );
+
+        return;
+    }
+
+    private function updateVlans( $port, $vlansArray, $mode, $vlans ) 
+    {
+        /* Delete the old vlan maps */
+        $port->vlans()->delete();
+
+        $insert = [];
+
+        /* create the new vlan maps array */
+        if( isset( $vlansArray[ 'vlan' ] ) )
+        {
+            $insert[] = [
+                'port_id'   => $port->id,
+                'vlan'      => $vlansArray[ 'vlan' ]
+            ];
+        }
+        else 
+        {
+            foreach( $vlansArray as $vlan )
+            {
+                $insert[] = [
+                    'port_id'   => $port->id,
+                    'vlan'      => $vlan[ 'vlan' ]
+                ];
+            }
+        }
+
+        PortVlan::insert( $insert );
+
+        /* update port */
+        $port->mode = $mode;
+        $port->last_updated = Carbon::now();
+        $port->save();
+
+        /* lets add the history */
+        PortHistory::insert( [
+            'port_id'       =>  $port->id,
+            'user_id'       =>  auth()->user()->id,
+            'info'          =>  'Changed mode to ' . $mode . '. Assigned the following vlan(s):' . $vlans,
+            'created_at'    =>  Carbon::now()
+        ] );
+
+        return;
+    }
 
 }

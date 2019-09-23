@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\NSwitch;
 use Illuminate\Http\Request;
+
+use App\Models\NSwitch;
+use App\Models\Vlan;
 
 class SwitchController extends Controller
 {
@@ -16,7 +18,10 @@ class SwitchController extends Controller
     {
         $switch->load( 'ports', 'ports.vlans' );
 
-        return view( 'network.switch.index', compact( 'switch' ) );
+        /* get the vlans */
+        $vlans = Vlan::orderBy('vlan')->get();
+
+        return view( 'network.switch.index', compact( 'switch', 'vlans' ) );
     }
 
     /**

@@ -1,8 +1,9 @@
 <template>
-    <button v-if="icon" 
+    <button 
         :class="`btn ${icon ? 'btn-icon btn-3' : ''} btn-${outline ? outline + '-' : '' }${color} ${getSize()}`" 
         type="button"
         :data-toggle="`${tooltip.title ? 'tooltip' : '' }`" :data-placement="tooltip.placement" :title="tooltip.title"
+        :disabled="disabled"
     >
 	    <span v-if="icon" class="btn-inner--icon"><i :class="`${icon}`"></i></span>
 	

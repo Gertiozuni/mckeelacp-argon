@@ -28,6 +28,7 @@ Vue.component('tabs', require('./components/Tabs/Tabs.vue').default);
 Vue.component('tab', require('./components/Tabs/Tab.vue').default);
 Vue.component('vue-button', require('./components/Button.vue').default);
 Vue.component('vue-badge', require('./components/Badge.vue').default);
+Vue.component('vue-modal', require('./components/Modal.vue').default);
 
 
 /*
