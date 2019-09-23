@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -34,14 +37,24 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware( 'guest' )->except( 'logout' );
     }
 
     public function username()
     {
-       $login = request()->input('email');
-       $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-       request()->merge([$field => $login]);
+       $login = request()->input( 'email' );
+       $field = filter_var( $login, FILTER_VALIDATE_EMAIL ) ? 'email' : 'name';
+       request()->merge( [ $field => $login ] );
        return $field;
+    }
+
+    /*
+    *   records when the user logs in
+    */
+    protected function authenticated( Request $request, $user )
+    {
+        $user->update([
+            'last_login' => Carbon::now()
+        ]);
     }
 }
