@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\PortVlan;
+use App\Models\Vlan;
+
 use Carbon\Carbon;
 
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -28,28 +30,29 @@ class PortVlanTableSeeder extends Seeder
         $output->writeLn( 'Importing at ' . $perLoop . ' vlan maps/loop' );
         $output->writeLn( '' );
 
-        $foundHim = false;
         for ( $i = 0; $i <= $totalUsers; $i += $perLoop )
         {
-            $thisBatch = DB::connection( 'legacy' )->table( 'network_vlan_map' )->orderBy( 'id' )->offset( $i )->limit( $perLoop )->get();
+            $thisBatch = DB::table( 'port_vlans' )->orderBy( 'id' )->offset( $i )->limit( $perLoop )->get();
             $output->writeLn( 'Batch ' . $i . '/' . $totalUsers . "\tFound " . count( $thisBatch ) . ' vlan maps' );
 
             \DB::beginTransaction();
             foreach ( $thisBatch as $legacyItem )
             {
-                $portvlan = PortVlan::find( $legacyItem->id );
-                
-                if ( ! $portvlan )
+                /* find vlan  */
+                $vlan = Vlan::where( 'vlan', $legacyItem->vlan )->first();
+
+                if( $vlan ) 
                 {
-                    $portvlan = new PortVlan;
+                    $portvlan = DB::table( 'port_vlan' )->where( 'vlan_id', $vlan->id )->where( 'port_id', $legacyItem->port_id )->first();
+
+                    if ( ! $portvlan )
+                    {
+                        DB::table( 'port_vlan' )->insert( [
+                            'port_id' => $legacyItem->port_id,
+                            'vlan_id' => $vlan->id
+                        ]);
+                    }
                 }
-
-                /* Basic fields.. */
-                $portvlan->id = $legacyItem->id;
-                $portvlan->port_id = $legacyItem->port_id;
-                $portvlan->vlan = $legacyItem->vlan;
-
-                $portvlan->save();
             }
             \DB::commit();
         }

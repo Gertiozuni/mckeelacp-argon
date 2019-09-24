@@ -16,7 +16,7 @@ class Port extends Model
 
     public function vlans() 
     {
-    	return $this->hasMany( PortVlan::class , 'port_id', 'id' );
+    	return $this->belongsToMany( Vlan::class );
     }
 
     public function switch()
@@ -26,6 +26,6 @@ class Port extends Model
 
     public function history() 
     {
-        return $this->hasMany( NetworkPortHistory::class , 'port_id', 'id' );
+        return $this->hasMany( NetworkPortHistory::class, 'port_id', 'id' );
     }
 }
