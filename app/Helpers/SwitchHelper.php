@@ -468,31 +468,24 @@ class SwitchHelper {
 
     private function updateVlans( $port, $vlansArray, $mode, $vlans ) 
     {
-        /* Delete the old vlan maps */
-        $port->vlans()->delete();
 
         $insert = [];
 
         /* create the new vlan maps array */
-        if( isset( $vlansArray[ 'vlan' ] ) )
+        if( isset( $vlansArray[ 'id' ] ) )
         {
-            $insert[] = [
-                'port_id'   => $port->id,
-                'vlan'      => $vlansArray[ 'vlan' ]
-            ];
+            $insert[] = $vlansArray[ 'id' ];
         }
         else 
         {
             foreach( $vlansArray as $vlan )
             {
-                $insert[] = [
-                    'port_id'   => $port->id,
-                    'vlan'      => $vlan[ 'vlan' ]
-                ];
+                $insert[] = $vlan[ 'id' ];
             }
         }
 
-        PortVlan::insert( $insert );
+        /* remove old vlans add new */
+        $port->vlans()->sync( $insert );
 
         /* update port */
         $port->mode = $mode;

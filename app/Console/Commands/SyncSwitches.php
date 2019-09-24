@@ -3,13 +3,13 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 use App\Models\NSwitch;
 use App\Models\Vlan;
 use App\Models\Campus;
 use App\Models\Port;
 use App\Models\PortHistory;
-use App\Models\PortVlan;
 use App\Models\User;
 use App\Models\SwitchHistory;
 
@@ -17,6 +17,7 @@ use Auth;
 use Mail;
 use Artisan;
 use Carbon\Carbon;
+use App;
 
 use App\Mail\SwitchSyncMail;
 
@@ -78,6 +79,8 @@ class SyncSwitches extends Command
             ->when( $switchId, function( $query, $switchId ) {
                 return $query->where( 'id', $switchId );
             })->get();
+        $vlansList = Vlan::all();
+        $console = new ConsoleOutput;
 
         $emailMessage = [];
         $clear = "\r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n clear \r\n";
@@ -94,7 +97,7 @@ class SyncSwitches extends Command
             $model = '';
             $macAddress = '';
             $fiberPorts = [];
-            $uptime = '';
+            $uptime = null;
             $messages = [];
 
             $switch->load( 'ports', 'ports.vlans' );
@@ -203,7 +206,7 @@ class SyncSwitches extends Command
 
                         preg_match("/1\/g(.*?) /", $line, $output );
 
-                        if( $output[ 1 ] > ( $portCount - 4 ) )
+                        if( $output[ 1 ] > ( $switch->fiber_ports ) )
                         {
                             $portNum = $output[ 1 ];
                             $ports[ $portNum ][ 'fiber' ] = true;
@@ -236,7 +239,7 @@ class SyncSwitches extends Command
                 }
 
                 /* if the current time and the saved time are 60 seconds apart, chances are it went down */
-                if( $uptime->diffInSeconds( $switch->uptime ) > 60 )
+                if( $uptime && $uptime->diffInSeconds( $switch->uptime ) > 60 )
                 {
                     /* update the switch */
                     $switch->uptime = $uptime;
@@ -251,7 +254,6 @@ class SyncSwitches extends Command
                         'info'          => 'Switch power outage detected'
                     ] );
                 }
-
 
                 /* run through running config */
                 foreach( $config as $line )
@@ -347,9 +349,7 @@ class SyncSwitches extends Command
                                 'port_id'       => $port->id
                             ] );
                         }
-
                     }
-
 
                     $modeChange = false;
 
@@ -359,7 +359,8 @@ class SyncSwitches extends Command
                         if( $port->mode != $ports[ $number ][ 'mode' ] )
                         {
                             /* since the mode changed, delete the old vlans so we can add the new mode vlans */
-                            $port->vlans()->delete();
+                            $this->line( 'Mode different. Port: ' . $port->id );
+                            $port->vlans->detach();
                             $modeChange = true;
 
                             if( $port->mode == 'access' )
@@ -381,21 +382,14 @@ class SyncSwitches extends Command
                             {
                                 foreach( $ports[ $number ][ 'vlans' ] as $vlan )
                                 {
-                                    $insert[] = [
-                                        'port_id'   => $port->id,
-                                        'vlan'      => $vlan
-                                    ];
+                                    $insert[] = [ $vlansList->where( 'vlan', $vlan )->first() ];
                                 }
 
-                                PortVlan::insert( $insert );
+                                $port->vlans->attach( $insert );
                             }
                             else
                             {
-                                PortVlan::insert( [
-                                    'port_id'   => $port->id,
-                                    'vlan'      => $ports[ $number ][ 'vlans' ]
-                                ] );
-
+                                $port->vlans->attach( $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first() );
                             }
 
                             /* Add the history */
@@ -421,22 +415,22 @@ class SyncSwitches extends Command
                                 {
                                     if( ! in_array( $vlan->vlan, $ports[ $number ][ 'vlans' ] ) )
                                     {
+                                        $this->line('modechange1');
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ][] = $vlan->vlan;
-                                        $vlan->delete();
+                                        $port->vlans->detach($vlan);
                                     }
                                 }
                                 else
                                 {
                                     if( $vlan->vlan != $ports[ $number ][ 'vlans' ] )
                                     {
+                                        $this->line('modechange2');
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ][] = $vlan->vlan;
-                                        $vlan->delete();
+                                        $port->vlans->detach($vlan);
                                     }
                                 }
                             }
                         }
-
-
 
                         /* nows lets see if any vlans are being added */
                         if( isset( $ports[ $number ][ 'vlans' ] ) )
@@ -445,43 +439,30 @@ class SyncSwitches extends Command
                             {
                                 foreach( $ports[ $number ][ 'vlans' ] as $vlan )
                                 {
+                                    $v = $vlansList->where( 'vlan', $vlan )->first();
                                     $vlanExist = $port->vlans->where( 'vlan', '=', $vlan )->first();
 
-                                    if( ! $vlanExist )
+                                    if( $v && ! $vlanExist )
                                     {
+                                        $this->line('general add');
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ][] = $vlan;
-
-                                        PortVlan::insert( [
-                                            'vlan'    => $vlan,
-                                            'port_id' => $port->id
-                                        ] );
+                                        $port->vlans()->attach( $vlansList->where( 'vlan', $vlan )->first() );
                                     }
-
-                                    // $port->last_updated = Carbon::now();
-                                    // $port->save();
-
                                 }
                             }
                             else
                             {
+                                $v = $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first();
                                 $vlanExist = $port->vlans->where( 'vlan', '=', $ports[ $number ][ 'vlans' ] )->first();
 
-                                if( ! $vlanExist )
+                                if( $v && ! $vlanExist )
                                 {
+                                    $this->line('access add');
                                     $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ][] = $ports[ $number ][ 'vlans' ];
-
-                                    PortVlan::insert( [
-                                        'vlan'    => $ports[ $number ][ 'vlans' ],
-                                        'port_id' => $port->id
-                                    ] );
+                                    $port->vlans()->attach( $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first() );   
                                 }
-
-                                // $port->last_updated = Carbon::now();
-                                // $port->save();
-
                             }
                         }
-
 
                         if( isset( $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ] ) )
                         {
@@ -535,8 +516,17 @@ class SyncSwitches extends Command
 
         if( count( $emailMessage ) )
         {
-            $users = User::where( 'name', 'jeff')->get();
-            Mail::to( $users )->send( new SwitchSyncMail( $emailMessage ) );
+            if( App::environment( 'local' ) )
+            {
+                $users = User::where( 'name', 'jeff')->get();
+                Mail::to( $users )->send( new SwitchSyncMail( $emailMessage ) );
+            }
+            else 
+            {
+                $users = \App\User::whereHas('roles', function( $query ) { 
+                    $query->whereIn( 'name', [ 'admin', 'tech', 'network tech' ] );
+                })->get();
+            }
         }
     }
 }
