@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PortVlan extends Model
 {
     protected $fillable = [];
-    protected $table = 'ports_vlans'; 
+    protected $table = 'port_vlan'; 
     public $timestamps = false;
 }
