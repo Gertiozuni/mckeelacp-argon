@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(VlansTableSeeder::class);
         // $this->call(SwitchesTableSeeder::class);
         // $this->call(PortsTableSeeder::class);
-        // $this->call(PortHistoryTableSeeder::class);
-        // $this->call(SwitchHistoryTableSeeder::class);
         // $this->call(ClassroomStudentsTableSeeder::class);
         // $this->call(ClassroomTeachersTableSeeder::class);
         //$this->call(PortVlanTableSeeder::class);
