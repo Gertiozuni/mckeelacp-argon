@@ -8,9 +8,9 @@ use App\Models\NSwitch;
 use App\Models\Vlan;
 use App\Models\Campus;
 use App\Models\Port;
-use App\Models\PortHistory;
 use App\Models\User;
-use App\Models\SwitchHistory;
+use App\Models\SwitchLog;
+
 
 use Auth;
 use Mail;
@@ -244,12 +244,10 @@ class SyncSwitches extends Command
 
                     $emailMessage[ $switch->ip_address ][ 'uptime' ] = 'Uptime change detected. Possible power outage';
 
-                    /* And add the disconnection to the history */
-                    SwitchHistory::insert( [
-                        'switch_id'     => $switch->id,
-                        'created_at'    => Carbon::Now(),
-                        'user_id'       => null,
-                        'info'          => 'Switch power outage detected'
+                    /* And add the disconnection to the logs */
+                    $switch->logs()->create([
+                        'created_at' => Carbon::Now(),
+                        'event' => 'Switch power outage detected'
                     ] );
                 }
 
@@ -339,12 +337,10 @@ class SyncSwitches extends Command
                         }
                         else
                         {
-                            /* Add the history */
-                            PortHistory::insert( [
-                                'info'          => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'status' ],
-                                'user_id'       => null,
-                                'created_at'    => Carbon::now(),
-                                'port_id'       => $port->id
+                            $switch->logs()->create([
+                                'event' => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'status' ],
+                                'created_at' => Carbon::now(),
+                                'port_id' => $port->id
                             ] );
                         }
                     }
@@ -390,12 +386,11 @@ class SyncSwitches extends Command
                                 $port->vlans->attach( $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first() );
                             }
 
-                            /* Add the history */
-                            PortHistory::insert( [
-                                'info'          => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'mode' ],
-                                'user_id'       => null,
-                                'created_at'    => Carbon::now(),
-                                'port_id'       => $port->id
+                            /* Add the log */
+                            $switch->logs()->create([
+                                'event' => $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'mode' ],
+                                'created_at' => Carbon::now(),
+                                'port_id' => $port->id
                             ] );
                         }
                     }
@@ -473,11 +468,11 @@ class SyncSwitches extends Command
 
                             $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ] = $message;
 
-                            PortHistory::insert( [
-                                'info'          => $message,
-                                'user_id'       => null,
-                                'created_at'    => Carbon::now(),
-                                'port_id'       => $port->id
+                            /* add the log */
+                            $switch->logs()->create([
+                                'event' => $message,
+                                'created_at' => Carbon::now(),
+                                'port_id' => $port->id
                             ] );
 
                             $port->last_updated = Carbon::now();
@@ -495,11 +490,11 @@ class SyncSwitches extends Command
 
                             $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansadded' ] = $message;
 
-                            PortHistory::insert( [
-                                'info'          => $message,
-                                'user_id'       => null,
-                                'created_at'    => Carbon::now(),
-                                'port_id'       => $port->id
+                            /* add the log */
+                            $switch->logs()->create([
+                                'event' => $message,
+                                'created_at' => Carbon::now(),
+                                'port_id' => $port->id
                             ] );
 
                             $port->last_updated = Carbon::now();

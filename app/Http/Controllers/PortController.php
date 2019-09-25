@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 use App\Models\Port;
-use App\Models\PortHistory;
 
 use App\Helpers\SwitchHelper;
 
@@ -16,18 +15,18 @@ class PortController extends Controller
 {
 
     /*
-    *	view the documented port history
+    *	view the documented port logs
     */
-    public function showHistory( Port $port ) 
+    public function logs( Port $port ) 
     {
 
         $search = request()->search;
 
-        // get the histories
-        $histories = $port->history()
+        // get the logs
+        $logs = $port->logs()
             ->orderByDesc( 'created_at' )
             ->when( $search, function( $query ) use ( $search ) {
-                return $query->where( 'info', 'LIKE', '%' . $search . '%' );
+                return $query->where( 'event', 'LIKE', '%' . $search . '%' );
             } )
             ->with( 'user' )
             ->paginate( 20 );
@@ -36,18 +35,18 @@ class PortController extends Controller
         if( request()->ajax() )
         {
             return response()->json([
-                'histories' => $histories
+                'logs' => $logs
             ]);
         }
 
         // saftey check
-        if( ! $port->history->count() )
+        if( ! $port->logs->count() )
         {
-            flash( 'Could not find any history for this port.' );
+            flash( 'Could not find any logs for this port.' );
             return back();
         }
         
-        return view( 'network.ports.history', compact( 'port', 'histories' ) );
+        return view( 'network.ports.logs', compact( 'port', 'logs' ) );
     }
 
     /*
@@ -59,8 +58,9 @@ class PortController extends Controller
         $description = request()->description;
 
         /* document the change */
-        $port->history()->create( [
-            'info' => 'Description has been changed from "' . $port->description . '" to "' . $description . '"',
+        $port->logs()->create( [
+            'switch_id' => $port->switch_id,
+            'event' => 'Description has been changed from "' . $port->description . '" to "' . $description . '"',
             'user_id' => auth()->user()->id,
             'created_at' => Carbon::now()
         ]);

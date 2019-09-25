@@ -8,26 +8,26 @@
         },
 
         props: {
-            port: {
+            switch: {
                 type: Object
             },
 
-            historyProp: {
+            logsInit: {
                 type: Object
             }
         },
 
         data() {
             return {
-                histories: this.historyProp,
+                logs: this.logsInit,
                 search: ''
             }
         },
 
         methods: {
-            getHistories(page = 1) {
-                axios.get(`/network/port/${this.port.id}/history?page=${page}&search=${this.search}`).then( ({data}) => {
-                    this.histories = data.histories
+            getLogs(page = 1) {
+                axios.get(`/network/switch/${this.switch.id}/logs?page=${page}&search=${this.search}`).then( ({data}) => {
+                    this.logs = data.logs
                 })
             }
         }

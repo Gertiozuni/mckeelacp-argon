@@ -24,9 +24,9 @@ class NSwitch extends Model
     	return $this->belongsTo( Campus::class, 'campus_id', 'id' );
     }
 
-    public function history() 
+    public function logs() 
     {
-        return $this->hasMany( SwitchHistory::class, 'switch_id', 'id' );
+        return $this->hasMany( SwitchLog::class, 'switch_id', 'id' );
     }
 
     // front end url 

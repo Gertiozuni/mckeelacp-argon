@@ -20,7 +20,8 @@ class SwitchesController extends Controller
     {
         $campuses = Campus::orderBy( 'name' )
             ->with( [ 'switches' => function( $query ) {
-                $query->withCount('ports');
+                $query->withCount( 'ports' );
+                $query->withCount( 'logs' );
             } ] )
             ->get();
 

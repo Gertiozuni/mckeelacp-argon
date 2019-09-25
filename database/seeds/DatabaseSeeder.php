@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         // $this->call(SwitchHistoryTableSeeder::class);
         // $this->call(ClassroomStudentsTableSeeder::class);
         // $this->call(ClassroomTeachersTableSeeder::class);
-
-        $this->call(PortVlanTableSeeder::class);
+        //$this->call(PortVlanTableSeeder::class);
+        $this->call(SeedSwitchLogsTable::class);
 
     }
 }

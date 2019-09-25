@@ -126,12 +126,12 @@
                                                     @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
-                                                <a v-if="port.history_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/history`">
+                                                <a v-if="port.logs_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/logs`">
                                                     <vue-button
                                                         icon='fas fa-history'
                                                         size='small'
                                                         color='default'
-                                                        :tooltip="{ title: 'View Changes', placement: 'top' }"
+                                                        :tooltip="{ title: 'View Logs', placement: 'top' }"
                                                     >
                                                     </vue-button>
                                                 </a>
@@ -199,12 +199,12 @@
                                                     @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
-                                                <a v-if="port.history_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/history`">
+                                                <a v-if="port.logs_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/logs`">
                                                     <vue-button
                                                         icon='fas fa-history'
                                                         size='small'
                                                         color='default'
-                                                        :tooltip="{ title: 'View Changes', placement: 'top' }"
+                                                        :tooltip="{ title: 'View Logs', placement: 'top' }"
                                                     >
                                                     </vue-button>
                                                 </a>

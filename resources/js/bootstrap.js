@@ -40,8 +40,13 @@ window.flash = function (message, level = 'success') {
     window.events.$emit('flash', { message, level });
 };
 
-/* errors */
-
+/* truncate */
+Vue.filter('truncate', function (text, length, suffix) {
+    if( text.length > length ) {
+        return text.substring(0, length) + suffix
+    }
+    return text
+})
 
 /* scroll event */
 window.scrollToDiv = (location) => {

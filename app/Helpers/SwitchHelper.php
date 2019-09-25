@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 
 use App\Models\Port;
 use App\Models\PortVlan;
-use App\Models\PortHistory;
 
 use Auth;
 use Mail;
@@ -492,13 +491,13 @@ class SwitchHelper {
         $port->last_updated = Carbon::now();
         $port->save();
 
-        /* lets add the history */
-        PortHistory::insert( [
-            'port_id'       =>  $port->id,
-            'user_id'       =>  auth()->user()->id,
-            'info'          =>  'Changed mode to ' . $mode . '. Assigned the following vlan(s): ' . $vlans,
-            'created_at'    =>  Carbon::now()
-        ] );
+        /* lets add the log */
+        $port->logs()->create([
+            'switch_id' => $port->switch_id,
+            'user_id' =>  auth()->user()->id,
+            'event' =>  'Changed mode to ' . $mode . '. Assigned the following vlan(s): ' . $vlans,
+            'created_at' =>  Carbon::now()
+        ]);
 
         return;
     }

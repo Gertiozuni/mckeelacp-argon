@@ -49,6 +49,15 @@
                                                 <td v-text="s.active ? moment(s.uptime).format('DD-MM-YYYY') : 'Inactive'"></td>
                                                 <td v-text="s.checked_in ? moment(s.checked_in).format('DD-MM-YYYY') : ''"></td>
                                                 <td class="text-right">
+                                                    <a v-if="s.logs_count > 0" :href="`{{ url( '/' )}}/network/switch/${s.id}/logs`">
+                                                        <vue-button
+                                                            icon='fas fa-history'
+                                                            size='small'
+                                                            color='default'
+                                                            :tooltip="{ title: 'View Logs', placement: 'top' }"
+                                                        >
+                                                        </vue-button>
+                                                    </a>
                                                     @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
                                                         <a :href="`{{ url( '/network/switches/form' ) }}/${s.id}`">
                                                             <button class="btn btn-sm btn-primary" type="button">
@@ -59,6 +68,7 @@
                                                             <span class="btn-inner--icon"><i class="fas fa-trash" @click='deleteSwitch(s)'></i></span>
                                                         </button>
                                                     @endif
+                                                    
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -96,8 +96,9 @@ Route::group(['middleware' => 'auth'], function () {
 			
 			Route::get( 'switches', 'SwitchesController@index' );
 			Route::get( 'switch/{switch}', 'SwitchController@index' );
+			Route::get( 'switch/{switch}/logs', 'SwitchController@logs');
 
-			Route::get('port/{port}/history', 'PortController@showHistory');
+			Route::get( 'port/{port}/logs', 'PortController@logs');
 
 		});
 

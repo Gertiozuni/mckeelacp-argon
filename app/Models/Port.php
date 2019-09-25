@@ -24,8 +24,8 @@ class Port extends Model
      	return $this->belongsTo( NSwitch::class, 'switch_id', 'id' );
     }
 
-    public function history() 
+    public function logs() 
     {
-        return $this->hasMany( PortHistory::class, 'port_id', 'id' );
+        return $this->hasMany( SwitchLog::class, 'port_id', 'id' );
     }
 }

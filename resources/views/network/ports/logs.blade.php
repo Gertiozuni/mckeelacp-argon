@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Switch ' . $port->switch->ip_address . ' - Port ' . $port->port ])
 
-    <port-history-view :port="{{ $port }}" :history-prop="{{ json_encode($histories) }}" inline-template>
+    <port-logs-view :port="{{ $port }}" :logs-init="{{ json_encode($logs) }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -22,7 +22,7 @@
                                     </a>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <input type="text" placeholder="search" v-model='search' v-on:keyup.enter="getHistories">
+                                    <input type="text" placeholder="search" v-model='search' v-on:keyup.enter="getLogs">
                                 </div>
                             </div>
                         </div>
@@ -35,22 +35,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class='myTableRow' v-for="history of histories.data">
-                                    <td v-text="moment(history.uptime).format('DD-MM-YYYY HH:mm:ss')"></td>
-                                    <td v-text="history.info"></td>
-                                    <td v-text="history.user ? history.user.name : 'System'"></td>
+                                <tr class='myTableRow' v-for="log of logs.data">
+                                    <td v-text="moment(log.uptime).format('DD-MM-YYYY HH:mm:ss')"></td>
+                                    <td v-text="log.event"></td>
+                                    <td v-text="log.user ? log.user.name : 'System'"></td>
                                 </tr>
                             </tbody>
                         </table>         
                     </div>
-                    <div class="card-footer py-4" v-show="histories.total > 20">
+                    <div class="card-footer py-4" v-show="logs.total > 20">
                         <nav class="d-flex justify-content-end" aria-label="...">
-                            <pagination :data="histories" @pagination-change-page="getHistories" :limit="3"></pagination>
+                            <pagination :data="logs" @pagination-change-page="getLogs" :limit="3"></pagination>
                         </nav>
                     </div>
                 </div>
             </div>
             @include('layouts.footers.auth')
         </div>
-    </port-history-view>
+    </port-logs-view>
 @endsection

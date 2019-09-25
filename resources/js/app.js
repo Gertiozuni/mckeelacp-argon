@@ -52,11 +52,13 @@ Vue.component('campus-view', require('./components/Pages/Campus/Index.vue').defa
 
 // network
 Vue.component('vlans-view', require('./components/Pages/Network/Vlans.vue').default);
+
 Vue.component('switches-view', require('./components/Pages/Network/Switches.vue').default);
 Vue.component('switchform-view', require('./components/Pages/Network/SwitchForm.vue').default);
 Vue.component('switch-view', require('./components/Pages/Network/Switch.vue').default);
+Vue.component('switch-logs-view', require('./components/Pages/Network/SwitchLogs.vue').default);
 
-Vue.component('port-history-view', require('./components/Pages/Network/PortHistory.vue').default);
+Vue.component('port-logs-view', require('./components/Pages/Network/PortLogs.vue').default);
 
 
 /**
