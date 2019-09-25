@@ -110,14 +110,14 @@
                                         <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                                    <vue-button 
-                                                        icon='fas fa-ethernet'
-                                                        size='small'
-                                                        color='primary'
-                                                        :tooltip="{ title: 'Change Mode', placement: 'top' }"
-                                                        @click.native="toggleModal('mode',port)"
-                                                    >
-                                                    </vue-button>
+                                                <vue-button 
+                                                    icon='fas fa-ethernet'
+                                                    size='small'
+                                                    color='primary'
+                                                    :tooltip="{ title: 'Change Mode', placement: 'top' }"
+                                                    @click.native="toggleModal('mode',port)"
+                                                >
+                                                </vue-button>
                                                 <vue-button 
                                                     icon='fas fa-project-diagram'
                                                     size='small'
@@ -126,6 +126,15 @@
                                                     @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
+                                                <a v-if="port.history_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/history`">
+                                                    <vue-button
+                                                        icon='fas fa-history'
+                                                        size='small'
+                                                        color='default'
+                                                        :tooltip="{ title: 'View Changes', placement: 'top' }"
+                                                    >
+                                                    </vue-button>
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>
@@ -190,6 +199,15 @@
                                                     @click.native="toggleModal('vlans',port)"
                                                 >
                                                 </vue-button>
+                                                <a v-if="port.history_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/history`">
+                                                    <vue-button
+                                                        icon='fas fa-history'
+                                                        size='small'
+                                                        color='default'
+                                                        :tooltip="{ title: 'View Changes', placement: 'top' }"
+                                                    >
+                                                    </vue-button>
+                                                </a>
                                             @endif
                                         </td>
                                     </tr>

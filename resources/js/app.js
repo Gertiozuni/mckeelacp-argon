@@ -56,6 +56,9 @@ Vue.component('switches-view', require('./components/Pages/Network/Switches.vue'
 Vue.component('switchform-view', require('./components/Pages/Network/SwitchForm.vue').default);
 Vue.component('switch-view', require('./components/Pages/Network/Switch.vue').default);
 
+Vue.component('port-history-view', require('./components/Pages/Network/PortHistory.vue').default);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

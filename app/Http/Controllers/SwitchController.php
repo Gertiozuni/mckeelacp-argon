@@ -17,6 +17,7 @@ class SwitchController extends Controller
     public function index( NSwitch $switch )
     {
         $switch->load( 'ports', 'ports.vlans' );
+        $switch->ports->loadCount( 'history' );
 
         /* get the vlans */
         $vlans = Vlan::orderBy('vlan')->get();

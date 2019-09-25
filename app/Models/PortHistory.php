@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PortHistory extends Model
 {
-	protected $fillable = [];
+	protected $fillable = [ 'info', 'user_id', 'created_at' ];
     protected $table = 'port_history'; 
     public $timestamps = false;
     protected $dates = [

@@ -26,6 +26,6 @@ class Port extends Model
 
     public function history() 
     {
-        return $this->hasMany( NetworkPortHistory::class, 'port_id', 'id' );
+        return $this->hasMany( PortHistory::class, 'port_id', 'id' );
     }
 }

@@ -496,7 +496,7 @@ class SwitchHelper {
         PortHistory::insert( [
             'port_id'       =>  $port->id,
             'user_id'       =>  auth()->user()->id,
-            'info'          =>  'Changed mode to ' . $mode . '. Assigned the following vlan(s):' . $vlans,
+            'info'          =>  'Changed mode to ' . $mode . '. Assigned the following vlan(s): ' . $vlans,
             'created_at'    =>  Carbon::now()
         ] );
 

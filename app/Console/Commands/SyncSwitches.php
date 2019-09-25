@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 use App\Models\NSwitch;
 use App\Models\Vlan;
@@ -80,7 +79,6 @@ class SyncSwitches extends Command
                 return $query->where( 'id', $switchId );
             })->get();
         $vlansList = Vlan::all();
-        $console = new ConsoleOutput;
 
         $emailMessage = [];
         $clear = "\r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n \r\n clear \r\n";

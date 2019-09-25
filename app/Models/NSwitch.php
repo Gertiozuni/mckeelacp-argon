@@ -28,4 +28,10 @@ class NSwitch extends Model
     {
         return $this->hasMany( SwitchHistory::class, 'switch_id', 'id' );
     }
+
+    // front end url 
+    public function url() 
+    {
+        return url( '/network/switch/' . $this->id );
+    }
 }

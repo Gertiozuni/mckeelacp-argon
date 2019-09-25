@@ -92,9 +92,12 @@ Route::group(['middleware' => 'auth'], function () {
 	*/
 	Route::prefix( 'network' )->group( function () {
 		Route::group(['middleware' => 'role_or_permission:admin|view network' ], function () {
-            Route::get( 'vlans', 'VlanController@index' );
+			Route::get( 'vlans', 'VlanController@index' );
+			
 			Route::get( 'switches', 'SwitchesController@index' );
 			Route::get( 'switch/{switch}', 'SwitchController@index' );
+
+			Route::get('port/{port}/history', 'PortController@showHistory');
 
 		});
 
@@ -121,6 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
 			Route::patch('port/{port}/mode', 'PortController@updateMode');
 			Route::patch('port/{port}/vlans', 'PortController@updateVlans');
 		});
+
 	});
 
 	Route::prefix( 'profile' )->group( function () {
