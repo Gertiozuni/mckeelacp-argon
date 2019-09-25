@@ -12,7 +12,7 @@
                     <div class="card shadow">
                         <div class="card-header border-0">
                             <div class="row align-items-center">
-                                <div class="col-8">
+                                <div class="col-2">
                                     <a href="{{ '/switches' }}">
                                         <vue-button
                                             text='Back'
@@ -21,8 +21,27 @@
                                         ></vue-button>
                                     </a>
                                 </div>
-                                <div class="col-4 text-right">
-                                    <input type="text" placeholder="search" v-model='search' v-on:keyup.enter="getLogs">
+                                <div class="col-10 text-right">
+                                    <flat-pickr
+                                        v-model="startDate"
+                                        style="width: 200px;"                                                         
+                                        placeholder="Start date"               
+                                        name="date"
+                                    ></flat-pickr>
+                                    <flat-pickr
+                                        v-model="endDate"
+                                        style="width: 200px;"                                                         
+                                        placeholder="End date"               
+                                        name="date"
+                                    ></flat-pickr>
+                                    <input type="text" placeholder="port" v-model='port'>
+                                    <input type="text" placeholder="event" v-model='event'>
+                                    <vue-button
+                                        text='Filter'
+                                        color='default'
+                                        size='small'
+                                        @click.native="getLogs"
+                                    ></vue-button>
                                 </div>
                             </div>
                         </div>

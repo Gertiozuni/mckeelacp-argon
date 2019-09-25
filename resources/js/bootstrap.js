@@ -48,6 +48,11 @@ Vue.filter('truncate', function (text, length, suffix) {
     return text
 })
 
+/* date picker */
+import VueFlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+Vue.use(VueFlatPickr);
+
 /* scroll event */
 window.scrollToDiv = (location) => {
     $(location).stop().animate({

@@ -29,14 +29,35 @@ class SwitchController extends Controller
      */
     public function logs( NSwitch $switch )
     {
-
-        $search = request()->search;
+        /* init */
+        $event = request()->event;
+        $port = request()->port;
+        $start = request()->startDate;
+        $end = request()->endDate;
 
         // get the logs
         $logs = $switch->logs()
             ->orderByDesc( 'created_at' )
-            ->when( $search, function( $query ) use ( $search ) {
-                return $query->where( 'event', 'LIKE', '%' . $search . '%' );
+            ->when( $event, function( $query ) use ( $event ) {
+                $query->where( 'event', 'LIKE', '%' . $event . '%' );
+            } )
+            ->when( $port, function( $query ) use ( $switch, $port ) {
+                $temp = $switch->ports()->where( 'port', $port )->first();
+                $query->where( 'port_id', $temp->id );
+            } )
+            ->when( $start || $end, function( $query ) use ( $start, $end ) {
+                if( $start && $end )
+                {
+                    $query->whereBetween( 'created_at', [ $start, $end ] );
+                }
+                else if( $start )
+                {
+                    $query->where( 'created_at', '>=', $start );
+                }
+                else if( $end )
+                {
+                    $query->where( 'created_at', '<=', $end );
+                }
             } )
             ->with( 'user', 'port' )
             ->paginate( 20 );
