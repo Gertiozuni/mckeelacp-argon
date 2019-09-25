@@ -519,14 +519,15 @@ class SyncSwitches extends Command
             if( App::environment( 'local' ) )
             {
                 $users = User::where( 'name', 'jeff')->get();
-                Mail::to( $users )->send( new SwitchSyncMail( $emailMessage ) );
             }
             else 
             {
-                $users = \App\User::whereHas('roles', function( $query ) { 
+                $users = User::whereHas( 'roles', function( $query ) { 
                     $query->whereIn( 'name', [ 'admin', 'tech', 'network tech' ] );
                 })->get();
             }
+
+            Mail::to( $users )->send( new SwitchSyncMail( $emailMessage ) );
         }
     }
 }
