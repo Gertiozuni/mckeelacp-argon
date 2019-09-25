@@ -360,7 +360,7 @@ class SyncSwitches extends Command
                         {
                             /* since the mode changed, delete the old vlans so we can add the new mode vlans */
                             $this->line( 'Mode different. Port: ' . $port->id );
-                            $port->vlans->detach();
+                            $port->vlans()->detach();
                             $modeChange = true;
 
                             if( $port->mode == 'access' )
@@ -417,7 +417,7 @@ class SyncSwitches extends Command
                                     {
                                         $this->line('modechange1');
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ][] = $vlan->vlan;
-                                        $port->vlans->detach($vlan);
+                                        $port->vlans()->detach($vlan);
                                     }
                                 }
                                 else
@@ -426,7 +426,7 @@ class SyncSwitches extends Command
                                     {
                                         $this->line('modechange2');
                                         $emailMessage[ $switch->ip_address ][ 'ports' ][ $number ][ 'vlansremoved' ][] = $vlan->vlan;
-                                        $port->vlans->detach($vlan);
+                                        $port->vlans()->detach($vlan);
                                     }
                                 }
                             }
