@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Permissions' ])
-    <permissions-view inline-template>
+    <permissions-view :permissions-init="{{ json_encode( $permissions ) }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -29,7 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="permission of permissions" class='myTableRow'>
+                                    <tr v-for="permission of permissions.data" class='myTableRow'>
                                         <td v-text="permission.name"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit users' ) )
@@ -49,7 +49,7 @@
                         </div>
                         <div class="card-footer py-4">
                             <nav class="d-flex justify-content-end" aria-label="...">
-                                <pagination :data="pagination" @pagination-change-page="getPermissions" :limit="3"></pagination>
+                                <pagination :data="permissions" @pagination-change-page="getPermissions" :limit="3"></pagination>
                             </nav>
                         </div>
                     </div>

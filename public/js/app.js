@@ -2710,15 +2710,16 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     pagination: _Pagination_Pagination_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  props: {
+    permissionsInit: {
+      type: Object
+    }
+  },
   data: function data() {
     return {
-      permissions: [],
-      pagination: {},
+      permissions: this.permissionsInit,
       search: ''
     };
-  },
-  created: function created() {
-    this.getPermissions();
   },
   methods: {
     getPermissions: function getPermissions() {
@@ -2727,8 +2728,7 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       axios.get("/permissions?page=".concat(page, "&search=").concat(this.search)).then(function (_ref) {
         var data = _ref.data;
-        _this.permissions = data.permissions.data;
-        _this.pagination = data.permissions;
+        _this.permissions = data.permissions;
       });
     },
     deletePermission: function deletePermission(id, name) {

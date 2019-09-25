@@ -21,22 +21,22 @@ class PermissionsController extends Controller
     public function index( Request $request )
     {
 
+        $search = $request->search; 
+
+        $permissions = Permission::orderBy( 'name' )
+            ->when( $search, function( $query, $search ) {
+                return $query->where( 'name', 'LIKE', '%' . $search . '%' );
+            })
+            ->paginate( 20 );
+
         if( $request->ajax() ) 
         {
-            $search = $request->search; 
-
-            $permissions = Permission::orderBy( 'name' )
-                ->when( $search, function( $query, $search ) {
-                    return $query->where( 'name', 'LIKE', '%' . $search . '%' );
-                })
-                ->paginate( 10 );
-
             return response()->json([
                 'permissions' => $permissions
             ]);
         }
 
-        return view( 'users.permissions' );
+        return view( 'users.permissions', compact( 'permissions' ) );
     }   
 
     /**

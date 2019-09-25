@@ -7,23 +7,23 @@
             pagination
         },
 
-        data() {
-            return {
-                permissions: [],
-                pagination: {},
-                search: ''
+        props: {
+            permissionsInit: {
+                type: Object
             }
         },
 
-        created() {
-            this.getPermissions()
+        data() {
+            return {
+                permissions: this.permissionsInit,
+                search: ''
+            }
         },
 
         methods: {
             getPermissions(page = 1) {
                 axios.get(`/permissions?page=${page}&search=${this.search}`).then( ({data}) => {
-                    this.permissions = data.permissions.data
-                    this.pagination = data.permissions
+                    this.permissions = data.permissions
                 })
             },
 
