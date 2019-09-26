@@ -17,7 +17,7 @@
 	                            
 	                        </div>
 	                        <div class="text-center">
-	                            <button type="submit" class="btn btn-success mt-4">{{ __('Search') }}</button>
+                                <base-button type="success" class="mt-4" native-type='submit'>Wipe</base-button>
 	                        </div>
 	                    </form>
                     </div>

@@ -9,3 +9,11 @@
   color: #fb6340;
 }
 
+.btn:not(:last-child) {
+  margin-right: 0px;
+}
+
+[v-cloak] {
+  display: none;
+}
+

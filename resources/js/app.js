@@ -26,9 +26,9 @@ Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('pagination', require('./components/Pagination/Pagination.vue'));
 Vue.component('tabs', require('./components/Tabs/Tabs.vue').default);
 Vue.component('tab', require('./components/Tabs/Tab.vue').default);
-Vue.component('vue-button', require('./components/Button.vue').default);
 Vue.component('vue-badge', require('./components/Badge.vue').default);
 Vue.component('vue-modal', require('./components/Modal.vue').default);
+Vue.component('base-button', require('./components/BaseButton.vue').default);
 
 
 /*
@@ -42,7 +42,7 @@ Vue.component('roles-view', require('./components/Pages/Roles.vue').default);
 Vue.component('role-view', require('./components/Pages/Role.vue').default);
 
 // apple classroom 
-Vue.component('appleclassroom-view', require('./components/Pages/AppleClassroom.vue').default);
+Vue.component('appleclassroom-view', require('./components/Pages/AppleClassroom/Index.vue').default);
 
 // cisco
 Vue.component('ciscosearch-view', require('./components/Pages/Cisco/Search.vue').default);

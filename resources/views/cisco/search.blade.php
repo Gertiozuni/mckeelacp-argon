@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Search iPads' ])
-    <ciscosearch-view inline-template>
+    <ciscosearch-view v-cloak inline-template>
         <div class="container-fluid mt--7">
             <div class="row" v-show="devices">
                 <div class="col-xl-12 order-xl-1">
@@ -42,12 +42,10 @@
                     <div class="card bg-secondary shadow">
                         <div class="card-body">
                             <div class="pl-lg-4">
-                                
                                 <textarea class="form-control" name='search' id='search' v-model="serials" rows="20" placeholder="DLXZ5WDO, DLXQ5ASN... &#10; or &#10;DLXZ5WDO &#10;DLXQ5ASN"></textarea>
-                                
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-success mt-4" @click="search">{{ __('Search') }}</button>
+                                <base-button type="success" class="mt-4" @click.native="search">Search</base-button>
                             </div>
                         </div>
                     </div>

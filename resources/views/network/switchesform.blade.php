@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => $switch->id ? 'Edit Switch' : 'Add Switch' ])
 
-    <switchform-view :campuses="{{ $campuses }}" :switch="{{ $switch }}" inline-template>
+    <switchform-view v-cloak :campuses="{{ $campuses }}" :switch="{{ $switch }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col-xl-12 order-xl-1">
@@ -15,7 +15,7 @@
                                 <div class="col-8">
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a href="{{ url( '/network/switches' ) }}" class="btn btn-sm btn-primary">Back to list</a>
+                                    <base-button tag="a" type="primary" size="sm" href="{{ url('/network/switches') }}" role="button">Back to Switches</base-button>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-success mt-4">Save</button>
+                                        <base-button type="success" native-type='submit' role="button" class='mt-4'>Save</base-button>
                                     </div>
                                 </div>
                             </form>

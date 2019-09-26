@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => $switch->ip_address ])
-    <switch-view :network-switch="{{ $switch }}" :vlans="{{ $vlans }}" inline-template>
+    <switch-view v-cloak :network-switch="{{ $switch }}" :vlans="{{ $vlans }}" inline-template>
         <div class="container-fluid mt--7">
     {{-- @todo switch ports 
         <switch-view :networkSwitch="{{ $switch }}" inline-template>
@@ -110,31 +110,29 @@
                                         <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                                <vue-button 
+                                                <base-button 
                                                     icon='fas fa-ethernet'
-                                                    size='small'
-                                                    color='primary'
+                                                    size='sm'
+                                                    type='primary'
                                                     :tooltip="{ title: 'Change Mode', placement: 'top' }"
                                                     @click.native="toggleModal('mode',port)"
-                                                >
-                                                </vue-button>
-                                                <vue-button 
+                                                ></base-button>
+                                                <base-button 
                                                     icon='fas fa-project-diagram'
-                                                    size='small'
-                                                    color='info'
+                                                    size='sm'
+                                                    type='info'
                                                     :tooltip="{ title: 'Manage Vlans', placement: 'top' }"
                                                     @click.native="toggleModal('vlans',port)"
-                                                >
-                                                </vue-button>
-                                                <a v-if="port.logs_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/logs`">
-                                                    <vue-button
-                                                        icon='fas fa-history'
-                                                        size='small'
-                                                        color='default'
-                                                        :tooltip="{ title: 'View Logs', placement: 'top' }"
-                                                    >
-                                                    </vue-button>
-                                                </a>
+                                                ></base-button>
+                                                <base-button
+                                                    v-if="port.logs_count > 0"
+                                                    tag='a'
+                                                    :href="`{{ url( '/' )}}/network/port/${port.id}/logs`"
+                                                    icon='fas fa-history'
+                                                    size='sm'
+                                                    type='default'
+                                                    :tooltip="{ title: 'View Logs', placement: 'top' }"
+                                                ></base-button>
                                             @endif
                                         </td>
                                     </tr>
@@ -181,33 +179,29 @@
                                         <td v-text="moment(port.checked_in).format('DD-MM-YYYY')"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                                <a :href="`{{ url( '/network/vlans/form' ) }}/${port.id}`">
-                                                    <vue-button 
-                                                        icon='fas fa-ethernet'
-                                                        size='small'
-                                                        color='primary'
-                                                        :tooltip="{ title: 'Change Mode', placement: 'top' }"
-                                                        @click.native="toggleModal('mode',port)"
-                                                    >
-                                                    </vue-button>
-                                                </a>
-                                                <vue-button 
+                                            <base-button 
+                                                    icon='fas fa-ethernet'
+                                                    size='sm'
+                                                    type='primary'
+                                                    :tooltip="{ title: 'Change Mode', placement: 'top' }"
+                                                    @click.native="toggleModal('mode',port)"
+                                                ></base-button>
+                                                <base-button 
                                                     icon='fas fa-project-diagram'
-                                                    size='small'
-                                                    color='info'
+                                                    size='sm'
+                                                    type='info'
                                                     :tooltip="{ title: 'Manage Vlans', placement: 'top' }"
                                                     @click.native="toggleModal('vlans',port)"
-                                                >
-                                                </vue-button>
-                                                <a v-if="port.logs_count > 0" :href="`{{ url( '/' )}}/network/port/${port.id}/logs`">
-                                                    <vue-button
-                                                        icon='fas fa-history'
-                                                        size='small'
-                                                        color='default'
-                                                        :tooltip="{ title: 'View Logs', placement: 'top' }"
-                                                    >
-                                                    </vue-button>
-                                                </a>
+                                                ></base-button>
+                                                <base-button
+                                                    v-if="port.logs_count > 0"
+                                                    tag='a'
+                                                    :href="`{{ url( '/' )}}/network/port/${port.id}/logs`"
+                                                    icon='fas fa-history'
+                                                    size='sm'
+                                                    type='default'
+                                                    :tooltip="{ title: 'View Logs', placement: 'top' }"
+                                                ></base-button>
                                             @endif
                                         </td>
                                     </tr>
@@ -275,31 +269,6 @@
                         </div>
                     </div>
                 </form>
-    
-                <template slot="footer">
-                    <vue-button 
-                        v-if="modal.type == 'mode'"
-                        color="primary"
-                        text="Change"
-                        @click.native="submitModeChange"
-                        :disabled="modal.disabled"
-                    >
-                    </vue-button>
-                    <vue-button 
-                        v-if="modal.type == 'vlans'"
-                        color="primary"
-                        text="Save"
-                        @click.native="submitVlansChange"
-                        :disabled="modal.disabled"
-                    >
-                    </vue-button>
-                    <vue-button 
-                        color="link ml-auto"
-                        text="Close"
-                        @click.native="hideModal"
-                    >
-                    </vue-button>
-                </template>
 
                 <form role="form" v-if="modal.type == 'vlans'">
                     <div class="form-group">
@@ -343,6 +312,28 @@
                         </div>
                     </div>
                 </form>
+
+                <template slot="footer">
+                        <base-button 
+                            v-if="modal.type == 'mode'"
+                            type="primary"
+                            text="Change"
+                            @click.native="submitModeChange"
+                            :disabled="modal.disabled"
+                        >Change</base-button>
+                        <base-button 
+                            v-if="modal.type == 'vlans'"
+                            type="primary"
+                            text="Save"
+                            @click.native="submitVlansChange"
+                            :disabled="modal.disabled"
+                        >Save</base-button>
+                        <base-button 
+                            type="link"
+                            class='ml-auto'
+                            @click.native="hideModal"
+                        >Close</base-button>
+                    </template>
             </vue-modal>
         </div>
     </switch-view> 

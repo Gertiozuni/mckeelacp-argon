@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Campuses' ])
-    <campus-view :campusesprop="{{$campuses}}" inline-template>
+    <campus-view v-cloak :campusesprop="{{$campuses}}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -14,7 +14,7 @@
                                 <div class="col-8">
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a href="{{ url('/campuses/form') }}" class="btn btn-sm btn-primary">{{ __('Add Campus') }}</a>
+                                    <base-button tag="a" type="primary" size="sm" href="{{ url('/campuses/form') }}" role="button">Add Campus</base-button>
                                 </div>
                             </div>
                         </div>
@@ -34,14 +34,8 @@
                                         <td v-text="campus.abbreviation"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit campuses' ) )
-                                                <a :href="`{{ url( '/campuses/form' ) }}/${campus.id}`">
-                                                    <button class="btn btn-sm btn-primary" type="button">
-                                                        <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
-                                                    </button>
-                                                </a>
-                                                <button class="btn btn-sm btn-danger" type="button" @click="deleteCampus( campus.id )">
-                                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
-                                                </button>
+                                                <base-button tag="a" type="primary" size="sm" :href="`{{ url( '/campuses/form' ) }}/${campus.id}`" icon="fas fa-pencil-alt"></base-button>
+                                                <base-button type="danger" size="sm" icon="fas fa-trash" @click.native="deleteCampus( campus.id )"></base-button>
                                             @endif
                                         </td>
                                     </tr>

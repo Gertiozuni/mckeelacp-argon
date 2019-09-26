@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Apple Classroom' ])
-    <appleclassroom-view inline-template>
+    <appleclassroom-view v-cloak inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col-xl-12 order-xl-1">
@@ -36,7 +36,7 @@
                                     />
                                 </div>
                             <div class="text-center">
-                                <button type="submit" @click="upload" class="btn btn-success mt-4">{{ __('Save') }}</button>
+                                <base-button type="success" nativeType='submit' @click.native="upload" class='mt-4'>Save</base-button>
                             </div>
                         </div>
                     </div>
@@ -45,6 +45,3 @@
         </div>
     </appleclassroom-view>
 @endsection
-
-@push( 'js' )
-@endpush

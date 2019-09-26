@@ -11,3 +11,9 @@ $danger: #fb6340;
 	margin-top: .25rem;
 	color: $danger;
 }
+
+.btn:not(:last-child){
+	margin-right: 0px;
+}
+
+[v-cloak] { display:none; }

@@ -4,7 +4,7 @@
 
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Vlans' ])
-    <vlans-view :vlans="{{$vlans}}" inline-template>
+    <vlans-view v-cloak :vlans="{{$vlans}}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -39,14 +39,19 @@
                                         <td v-text="'/' + vlan.subnet"></td>
                                         <td class="text-right">
                                             @if( Auth::user()->hasAnyPermission( 'admin', 'edit vlans' ) )
-                                                <a :href="`{{ url( '/network/vlans/form' ) }}/${vlan.id}`">
-                                                    <button class="btn btn-sm btn-primary" type="button">
-                                                        <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
-                                                    </button>
-                                                </a>
-                                                <button class="btn btn-sm btn-danger" type="button" @click="deleteVlan( vlan )">
-                                                    <span class="btn-inner--icon"><i class="fas fa-trash"></i></span>
-                                                </button>
+                                                <base-button
+                                                    tag="a"
+                                                    :href="`{{ url( '/network/vlans/form' ) }}/${vlan.id}`"
+                                                    type="primary"
+                                                    size="sm"
+                                                    icon="fas fa-pencil-alt"
+                                                ></base-button>
+                                                <base-button
+                                                    type="danger"
+                                                    icon="fas fa-trash"
+                                                    size="sm"
+                                                    @click.native="deleteVlan( vlan )"
+                                                ></base-button>
                                             @endif
                                         </td>
                                     </tr>

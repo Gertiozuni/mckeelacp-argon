@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => $switch->ip_address . ' - Logs'])
 
-    <switch-logs-view :switch="{{ $switch }}" :logs-init="{{ json_encode( $logs ) }}" inline-template>
+    <switch-logs-view v-cloak :switch="{{ $switch }}" :logs-init="{{ json_encode( $logs ) }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -13,13 +13,12 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col-2">
-                                    <a href="{{ '/switches' }}">
-                                        <vue-button
-                                            text='Back'
-                                            color='primary'
-                                            size='small'
-                                        ></vue-button>
-                                    </a>
+                                    <base-button
+                                        tag='a'
+                                        href="{{ '/switches' }}"
+                                        type='primary'
+                                        size='sm'
+                                    >Back</base-button>
                                 </div>
                                 <div class="col-10 text-right">
                                     <flat-pickr
@@ -36,12 +35,11 @@
                                     ></flat-pickr>
                                     <input type="text" placeholder="port" v-model='port'>
                                     <input type="text" placeholder="event" v-model='event'>
-                                    <vue-button
-                                        text='Filter'
+                                    <base-button
                                         color='default'
-                                        size='small'
+                                        size='sm'
                                         @click.native="getLogs"
-                                    ></vue-button>
+                                    >Filter</base-button>
                                 </div>
                             </div>
                         </div>

@@ -32,7 +32,6 @@
                     this.backToTop()
                     flash(`${theSwitch.ip_address} has been successfully deleted`, 'success' )
                 }).catch( ({response}) => {
-                    console.log
                     flash( response.data.message, 'danger' )
                 })
             },

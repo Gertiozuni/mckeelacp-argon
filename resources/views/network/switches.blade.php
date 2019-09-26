@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Switches' ])
 
-    <switches-view :campuses="{{ $campuses }}" inline-template>
+    <switches-view v-cloak :campuses="{{ $campuses }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -14,7 +14,12 @@
                             <div class="row align-items-center">
                                 <div class="col-12 text-right">
                                     @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                        <a href="{{ url('/network/switches/form') }}" class="btn btn-sm btn-primary">Add Switch</a>
+                                        <base-button
+                                            tag="a"
+                                            href="{{ url('/network/switches/form') }}"
+                                            type="primary"
+                                            size="sm"
+                                        >Add Switch</base-button>
                                     @endif
                                 </div>
                             </div>
@@ -49,24 +54,32 @@
                                                 <td v-text="s.active ? moment(s.uptime).format('DD-MM-YYYY') : 'Inactive'"></td>
                                                 <td v-text="s.checked_in ? moment(s.checked_in).format('DD-MM-YYYY') : ''"></td>
                                                 <td class="text-right">
-                                                    <a v-if="s.logs_count > 0" :href="`{{ url( '/' )}}/network/switch/${s.id}/logs`">
-                                                        <vue-button
-                                                            icon='fas fa-history'
-                                                            size='small'
-                                                            color='default'
-                                                            :tooltip="{ title: 'View Logs', placement: 'top' }"
-                                                        >
-                                                        </vue-button>
-                                                    </a>
+                                                    <base-button
+                                                        v-if="s.logs_count > 0"
+                                                        tag="a"
+                                                        :href="`{{ url( '/' )}}/network/switch/${s.id}/logs`"
+                                                        icon='fas fa-history'
+                                                        size='sm'
+                                                        type='default'
+                                                        :tooltip="{ title: 'View Logs', placement: 'top' }"
+                                                    ></base-button>
                                                     @if( Auth::user()->hasAnyPermission( 'admin', 'edit network' ) )
-                                                        <a :href="`{{ url( '/network/switches/form' ) }}/${s.id}`">
-                                                            <button class="btn btn-sm btn-primary" type="button">
-                                                                <span class="btn-inner--icon"><i class="fas fa-pencil-alt"></i></span>
-                                                            </button>
-                                                        </a>
-                                                        <button class="btn btn-sm btn-danger" type="button">
-                                                            <span class="btn-inner--icon"><i class="fas fa-trash" @click='deleteSwitch(s)'></i></span>
-                                                        </button>
+                                                        <base-button
+                                                            tag="a"
+                                                            :href="`{{ url( '/' )}}/network/switches/form/${s.id}`"
+                                                            icon='fas fa-pencil-alt'
+                                                            size='sm'
+                                                            type='primary'
+                                                            :tooltip="{ title: 'Edit', placement: 'top' }"
+                                                        ></base-button>
+                                                        
+                                                        <base-button
+                                                            icon='fas fa-trash' 
+                                                            @click='deleteSwitch(s)'
+                                                            size='sm'
+                                                            type='danger'
+                                                            :tooltip="{ title: 'Delete', placement: 'top' }"
+                                                        ></base-button>
                                                     @endif
                                                     
                                                 </td>

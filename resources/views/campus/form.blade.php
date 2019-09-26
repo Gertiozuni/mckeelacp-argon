@@ -14,7 +14,7 @@
                                 <h3 class="mb-0">{{ $campus->id ? $campus->name : '' }}</h3>
                             </div>
                             <div class="col-4 text-right">
-                                <a href="{{ url( '/campuses' ) }}" class="btn btn-sm btn-primary">{{ __('Back to list') }}</a>
+                                <base-button tag="a" type="primary" size="sm" href="{{ url('/campuses') }}" role="button">Back to Campuses</base-button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
+                                    <base-button type="success" class="mt-4" native-type='submit'>Save</base-button>
                                 </div>
                             </div>
                         </form>

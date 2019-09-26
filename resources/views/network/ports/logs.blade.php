@@ -5,7 +5,7 @@
 @section('content')
     @include('layouts.headers.cards', [ 'title' => 'Switch ' . $port->switch->ip_address . ' - Port ' . $port->port ])
 
-    <port-logs-view :port="{{ $port }}" :logs-init="{{ json_encode($logs) }}" inline-template>
+    <port-logs-view v-cloak :port="{{ $port }}" :logs-init="{{ json_encode($logs) }}" inline-template>
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
@@ -13,13 +13,12 @@
                         <div class="card-header border-0">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <a href="{{ $port->switch->url() }}">
-                                        <vue-button
-                                            text='Back'
-                                            color='primary'
-                                            size='small'
-                                        ></vue-button>
-                                    </a>
+                                    <base-button
+                                        tag='a'
+                                        href="{{ $port->switch->url() }}"
+                                        color='primary'
+                                        size='sm'
+                                    >Back</base-button>
                                 </div>
                                 <div class="col-4 text-right">
                                     <input type="text" placeholder="search" v-model='search' v-on:keyup.enter="getLogs">
