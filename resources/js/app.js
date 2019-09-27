@@ -22,13 +22,15 @@ window.Vue = require('vue');
 /*
 * Globel Components
 */
+Vue.component('card', require('./components/Card.vue').default);
 Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('pagination', require('./components/Pagination/Pagination.vue'));
 Vue.component('tabs', require('./components/Tabs/Tabs.vue').default);
-Vue.component('tab', require('./components/Tabs/Tab.vue').default);
+Vue.component('tab-pane', require('./components/Tabs/TabPane.vue').default);
 Vue.component('vue-badge', require('./components/Badge.vue').default);
 Vue.component('vue-modal', require('./components/Modal.vue').default);
 Vue.component('base-button', require('./components/BaseButton.vue').default);
+Vue.component('base-table', require('./components/BaseTable.vue').default);
 
 
 /*

@@ -1,26 +1,16 @@
 <template>
-  <div class="tab-pane"
+  <div class="tab-pane fade"
+       :id="id || label"
+       :class="{'active show': active}"
        v-show="active"
-       :id="id || title"
-       :class="{active: active}">
+       :aria-expanded="active">
     <slot></slot>
   </div>
 </template>
 <script>
 export default {
   name: "tab-pane",
-  props: {
-    title: {
-      type: String,
-      default: "",
-      description: "Tab pane title"
-    },
-    id: {
-      type: String,
-      default: null,
-      description: "Tab pane id"
-    }
-  },
+  props: ["label", "id", "title"],
   inject: ["addTab", "removeTab"],
   data() {
     return {
