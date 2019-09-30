@@ -516,7 +516,7 @@ class SyncSwitches extends Command
             else 
             {
                 $users = User::whereHas( 'roles', function( $query ) { 
-                    $query->whereIn( 'name', [ 'admin', 'tech', 'network tech' ] );
+                    $query->whereIn( 'name', [ 'admin', 'tech', 'network' ] );
                 })->get();
             }
 
