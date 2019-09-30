@@ -29,6 +29,7 @@
             return {
                 search: '',
                 tempValue: null,
+                editState: false,
                 ports: this.networkSwitch.ports,
                 modal: {
                     active: false,
@@ -70,23 +71,26 @@
             },
 
             enableEdit(port) {
-                this.tempValue = port.description;
-                port.editing = true
-                this.$forceUpdate()
+                if(this.editState === false) {
+                    this.editState = true
+                    this.tempValue = port.description;
+                    port.editing = true
+                    this.$forceUpdate()
 
-                this.$nextTick(() => {
-                    this.$refs.edit[0].focus()
-                })
+                    this.$nextTick(() => {
+                        this.$refs.edit[0].focus()
+                    })
+                }
             },
 
             disableEdit(port) {
                 axios.patch(`/network/port/${port.id}`, {
                     'description': this.tempValue
                 }).then( ({data}) => {
-                    const index = this.ports.findIndex(p => p.id === port.id)
-                    this.ports[index].description = this.tempValue
-                    this.ports[index].editing = false
+                    port.description = this.tempValue ? this.tempValue : '' 
+                    port.editing = false
                     this.tempValue = null
+                    this.editState = false
 
                     flash(`Port description has been successfully updated`, 'success' )
                 })

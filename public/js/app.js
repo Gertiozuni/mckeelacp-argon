@@ -2539,6 +2539,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       search: '',
       tempValue: null,
+      editState: false,
       ports: this.networkSwitch.ports,
       modal: {
         active: false,
@@ -2601,12 +2602,15 @@ __webpack_require__.r(__webpack_exports__);
     enableEdit: function enableEdit(port) {
       var _this2 = this;
 
-      this.tempValue = port.description;
-      port.editing = true;
-      this.$forceUpdate();
-      this.$nextTick(function () {
-        _this2.$refs.edit[0].focus();
-      });
+      if (this.editState === false) {
+        this.editState = true;
+        this.tempValue = port.description;
+        port.editing = true;
+        this.$forceUpdate();
+        this.$nextTick(function () {
+          _this2.$refs.edit[0].focus();
+        });
+      }
     },
     disableEdit: function disableEdit(port) {
       var _this3 = this;
@@ -2615,14 +2619,10 @@ __webpack_require__.r(__webpack_exports__);
         'description': this.tempValue
       }).then(function (_ref) {
         var data = _ref.data;
-
-        var index = _this3.ports.findIndex(function (p) {
-          return p.id === port.id;
-        });
-
-        _this3.ports[index].description = _this3.tempValue;
-        _this3.ports[index].editing = false;
+        port.description = _this3.tempValue ? _this3.tempValue : '';
+        port.editing = false;
         _this3.tempValue = null;
+        _this3.editState = false;
         flash("Port description has been successfully updated", 'success');
       });
       this.$forceUpdate();

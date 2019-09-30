@@ -80,9 +80,6 @@
 
                                         @if( Auth::user()->hasAnyPermission('admin', 'edit port' ) )
                                             <td class="description" v-if="! port.editing" v-text="port.description" @click="enableEdit(port)">
-                                                <div v-if="port.editing">
-                                                    <input v-model="tempValue" class="input"/>
-                                                </div>
                                             </td>
                                             <td v-if="port.editing">
                                                 <input ref="edit" @blur="disableEdit(port)" v-model="tempValue" class="input"/>
