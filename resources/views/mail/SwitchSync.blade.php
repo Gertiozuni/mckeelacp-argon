@@ -15,7 +15,7 @@
 
 @if( isset( $switch[ 'ports' ] ) )
 @foreach( $switch[ 'ports' ] as $port => $change )
-## Port {{ $port }}
+## Port {{ $port }} - {{ $change[ 'description' ] }}
 @if( isset( $change[ 'status' ] ) )
 * {{ $change[ 'status' ] }}
 @endif
