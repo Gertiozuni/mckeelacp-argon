@@ -36,7 +36,7 @@
                             <tbody>
                                 <tr class='myTableRow' v-for="log of logs.data">
                                     <td v-text="moment(log.uptime).format('DD-MM-YYYY HH:mm:ss')"></td>
-                                    <td v-text="log.event"></td>
+                                    <td data-toggle="tooltip" data-placement="bottom" :title="log.event">@{{ log.event | truncate(100, '...')}}</td>
                                     <td v-text="log.user ? log.user.name : 'System'"></td>
                                 </tr>
                             </tbody>
