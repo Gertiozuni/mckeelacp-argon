@@ -380,6 +380,7 @@ class SwitchHelper {
             fputs($this->telnet, "interface ethernet 1/g$port->port\r\n");
             fputs($this->telnet, "switchport mode $mode\r\n");
 
+
             if( $mode == 'access' )
             {
                 fputs($this->telnet, "switchport $mode vlan $vlans\r\n");
@@ -396,6 +397,12 @@ class SwitchHelper {
             {
                 fputs($this->telnet, "copy running-config startup-config\r\n");
                 fputs($this->telnet, "y\r\n");
+            }
+
+            $test = [];
+            while($line = fgets( $this->telnet ) )
+            {
+                $test[] = trim($line);
             }
 
             fclose( $this->telnet );
@@ -455,6 +462,12 @@ class SwitchHelper {
             {
                 fputs($this->telnet, "copy running-config startup-config\r\n");
                 fputs($this->telnet, "y\r\n");
+            }
+
+            $test = [];
+            while($line = fgets( $this->telnet ) )
+            {
+                $test[] = trim($line);
             }
 
             fclose( $this->telnet );
