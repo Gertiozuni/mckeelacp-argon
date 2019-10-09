@@ -379,11 +379,11 @@ class SyncSwitches extends Command
                                     $insert[] = [ $vlansList->where( 'vlan', $vlan )->first() ];
                                 }
 
-                                $port->vlans->attach( $insert );
+                                $port->vlans()->attach( $insert );
                             }
                             else
                             {
-                                $port->vlans->attach( $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first() );
+                                $port->vlans()->attach( $vlansList->where( 'vlan', $ports[ $number ][ 'vlans' ] )->first() );
                             }
 
                             /* Add the log */
